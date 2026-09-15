@@ -1,0 +1,359 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum SourceTier {
+  LEVEL_A // Government archives, Museums, Universities, UNESCO, National archives
+  LEVEL_B // Established encyclopedias, Major newspapers, Published academic works
+  LEVEL_C // Secondary vetted sources
+}
+
+enum ArticleStatus {
+  DRAFT
+  RESEARCHING
+  FACT_CHECKING
+  EDITORIAL_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum RelationshipType {
+  FATHER
+  MOTHER
+  SON
+  DAUGHTER
+  BROTHER
+  SISTER
+  SPOUSE
+  PREDECESSOR
+  SUCCESSOR
+  ANCESTOR
+  DESCENDANT
+}
+
+model Region {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  arabicName  String
+  slug        String    @unique
+  description String?
+  countries   Country[]
+}
+
+model Country {
+  id                String             @id @default(cuid())
+  name              String             @unique
+  arabicName        String
+  slug              String             @unique
+  isoCode           String             @unique
+  isGCC             Boolean            @default(false)
+  regionId          String
+  region            Region             @relation(fields: [regionId], references: [id])
+  capital           String
+  largestCity       String
+  population        BigInt
+  areaKm2           Float
+  currency          String
+  officialLanguage  String             @default("Arabic")
+  governmentType    String
+  headOfState       String
+  demonym           String
+  callingCode       String
+  internetDomain    String
+  timeZone          String
+  foundingYear      Int?
+  summary           String             @db.Text
+  overview          String             @db.Text
+  flagUrl           String
+  emblemUrl         String?
+  anthemName        String?
+  heroImageUrl      String
+  latitude          Float
+  longitude         Float
+  gdpNominalBillion Float?
+  gdpPerCapita      Float?
+  cities            City[]
+  royalFamilies     RoyalFamily[]
+  people            Person[]
+  landmarks         Landmark[]
+  nationalSymbols   NationalSymbol[]
+  timelineEvents    TimelineEvent[]
+  citations         Citation[]
+  articles          Article[]
+  leaders           PoliticalLeader[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model RoyalFamily {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  arabicName   String
+  slug         String   @unique
+  countryId    String
+  country      Country  @relation(fields: [countryId], references: [id])
+  foundedYear  Int
+  founder      String
+  currentHead  String
+  crestUrl     String?
+  overview     String   @db.Text
+  history      String   @db.Text
+  residences   String[]
+  people       Person[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Dynasty {
+  id           String          @id @default(cuid())
+  name         String          @unique
+  arabicName   String
+  slug         String          @unique
+  origin       String
+  startYear    Int
+  endYear      Int?
+  isCurrent    Boolean         @default(false)
+  overview     String          @db.Text
+  legacy       String          @db.Text
+  people       Person[]
+  events       TimelineEvent[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model Person {
+  id               String               @id @default(cuid())
+  name             String
+  arabicName       String
+  slug             String               @unique
+  title            String
+  arabicTitle      String
+  birthYear        Int?
+  deathYear        Int?
+  isCurrent        Boolean              @default(false)
+  isRuler          Boolean              @default(false)
+  reignStart       DateTime?
+  reignEnd         DateTime?
+  portraitUrl      String
+  biography        String               @db.Text
+  earlyLife        String?              @db.Text
+  riseToPower      String?              @db.Text
+  politicalLegacy  String?              @db.Text
+  honours          String[]
+  countryId        String
+  country          Country              @relation(fields: [countryId], references: [id])
+  royalFamilyId    String?
+  royalFamily      RoyalFamily?         @relation(fields: [royalFamilyId], references: [id])
+  dynastyId        String?
+  dynasty          Dynasty?             @relation(fields: [dynastyId], references: [id])
+  relationshipsFrom PersonRelationship[] @relation("FromPerson")
+  relationshipsTo   PersonRelationship[] @relation("ToPerson")
+  citations        Citation[]
+  politicalRoles   PoliticalLeader[]
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+}
+
+model PersonRelationship {
+  id               String           @id @default(cuid())
+  fromPersonId     String
+  fromPerson       Person           @relation("FromPerson", fields: [fromPersonId], references: [id])
+  toPersonId       String
+  toPerson         Person           @relation("ToPerson", fields: [toPersonId], references: [id])
+  relationshipType RelationshipType
+}
+
+model PoliticalLeader {
+  id         String    @id @default(cuid())
+  countryId  String
+  country    Country   @relation(fields: [countryId], references: [id])
+  personId   String
+  person     Person    @relation(fields: [personId], references: [id])
+  title      String
+  validFrom  DateTime
+  validUntil DateTime?
+  isCurrent  Boolean   @default(true)
+  verifiedAt DateTime  @default(now())
+  sourceId   String?
+  source     Source?   @relation(fields: [sourceId], references: [id])
+}
+
+model City {
+  id               String     @id @default(cuid())
+  name             String
+  arabicName       String
+  slug             String     @unique
+  countryId        String
+  country          Country    @relation(fields: [countryId], references: [id])
+  population       Int
+  isCapital        Boolean    @default(false)
+  shortDescription String
+  history          String     @db.Text
+  architecture     String     @db.Text
+  economy          String     @db.Text
+  culture          String     @db.Text
+  imageUrl         String
+  landmarks        Landmark[]
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
+
+model Landmark {
+  id                String   @id @default(cuid())
+  name              String
+  arabicName        String
+  slug              String   @unique
+  cityId            String?
+  city              City?    @relation(fields: [cityId], references: [id])
+  countryId         String
+  country           Country  @relation(fields: [countryId], references: [id])
+  era               String
+  architectureStyle String
+  constructionDate  String
+  overview          String   @db.Text
+  history           String   @db.Text
+  archaeology       String?  @db.Text
+  imageUrl          String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model HistoricalEra {
+  id           String          @id @default(cuid())
+  name         String          @unique
+  arabicName   String
+  slug         String          @unique
+  startYear    Int
+  endYear      Int
+  overview     String          @db.Text
+  origins      String          @db.Text
+  territory    String          @db.Text
+  culture      String          @db.Text
+  science      String          @db.Text
+  architecture String          @db.Text
+  events       TimelineEvent[]
+}
+
+model TimelineEvent {
+  id          String         @id @default(cuid())
+  year        Int
+  dateString  String?
+  title       String
+  arabicTitle String
+  location    String
+  description String         @db.Text
+  category    String
+  countryId   String?
+  country     Country?       @relation(fields: [countryId], references: [id])
+  dynastyId   String?
+  dynasty     Dynasty?       @relation(fields: [dynastyId], references: [id])
+  eraId       String?
+  era         HistoricalEra? @relation(fields: [eraId], references: [id])
+}
+
+model CultureTopic {
+  id            String   @id @default(cuid())
+  title         String   @unique
+  arabicTitle   String
+  slug          String   @unique
+  category      String
+  overview      String   @db.Text
+  history       String   @db.Text
+  craftsmanship String   @db.Text
+  traditions    String   @db.Text
+  imageUrl      String
+}
+
+model NationalSymbol {
+  id          String  @id @default(cuid())
+  countryId   String
+  country     Country @relation(fields: [countryId], references: [id])
+  type        String  // FLAG, EMBLEM, ANTHEM, ANIMAL, FLOWER, DAY
+  name        String
+  description String  @db.Text
+  imageUrl    String?
+}
+
+model Article {
+  id            String          @id @default(cuid())
+  title         String
+  arabicTitle   String
+  slug          String          @unique
+  leadParagraph String          @db.Text
+  body          String          @db.Text
+  category      String
+  heroImageUrl  String
+  readTime      Int             @default(5)
+  status        ArticleStatus   @default(PUBLISHED)
+  countryId     String?
+  country       Country?        @relation(fields: [countryId], references: [id])
+  sections      ArticleSection[]
+  citations     Citation[]
+  publishedAt   DateTime?       @default(now())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model ArticleSection {
+  id          String   @id @default(cuid())
+  articleId   String
+  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  title       String
+  arabicTitle String
+  content     String   @db.Text
+  order       Int
+}
+
+model Source {
+  id              String            @id @default(cuid())
+  title           String
+  author          String
+  publisher       String
+  publicationDate String?
+  url             String?
+  isbn            String?
+  qualityTier     SourceTier        @default(LEVEL_A)
+  verified        Boolean           @default(true)
+  citations       Citation[]
+  leaders         PoliticalLeader[]
+  createdAt       DateTime          @default(now())
+}
+
+model Citation {
+  id             String    @id @default(cuid())
+  citationNumber Int
+  text           String
+  sourceId       String
+  source         Source    @relation(fields: [sourceId], references: [id])
+  articleId      String?
+  article        Article?  @relation(fields: [articleId], references: [id])
+  countryId      String?
+  country        Country?  @relation(fields: [countryId], references: [id])
+  personId       String?
+  person         Person?   @relation(fields: [personId], references: [id])
+}
+
+model Revision {
+  id             String   @id @default(cuid())
+  entityType     String
+  entityId       String
+  editorName     String
+  changeSummary  String
+  revisionNumber Int
+  createdAt      DateTime @default(now())
+}
+
+model FactCheckFlag {
+  id         String   @id @default(cuid())
+  entityType String
+  entityId   String
+  flagType   String   // CITATION_NEEDED, DISPUTED, HISTORICAL_UNCERTAINTY, OUTDATED_STATISTIC, POLITICAL_VERIFICATION
+  notes      String
+  resolved   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
