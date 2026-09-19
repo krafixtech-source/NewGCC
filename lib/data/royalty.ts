@@ -13,8 +13,8 @@ export const royalFamiliesData: RoyalFamily[] = [
     founder: 'Imam Muhammad bin Saud',
     currentHead: 'King Salman bin Abdulaziz Al Saud',
     currentTitle: 'King of Saudi Arabia & Custodian of the Two Holy Mosques',
-    crestUrl: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80',
-    heroImageUrl: 'https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1600&q=85',
+    crestUrl: '/images/craftsmanship.jpg',
+    heroImageUrl: '/images/palaces/yamamah-palace.jpg',
     overview: 'The House of Saud is the ruling royal dynasty of Saudi Arabia. Tracing its lineage back to Mani\' ibn Rabi\'a al-Muraydi who settled in Diriyah around 1446, the dynasty has governed three historical sovereign states: the First Saudi State (Emirate of Diriyah, 1727–1818), the Second Saudi State (Emirate of Nejd, 1824–1891), and the modern Kingdom of Saudi Arabia, founded in 1932 by King Abdulaziz Al Saud (Ibn Saud).',
     history: 'In 1727, Imam Muhammad bin Saud became ruler of Diriyah, laying the political foundation of the first state. Despite Ottoman campaigns that destroyed Diriyah in 1818, Imam Turki bin Abdullah resurrected the dynasty in Riyadh in 1824. Following exile in Kuwait in the late 19th century, King Abdulaziz executed the legendary recapture of Masmak Fortress in Riyadh in 1902, embarking on three decades of unification diplomacy across the Arabian Peninsula.',
     residences: [
@@ -29,7 +29,7 @@ export const royalFamiliesData: RoyalFamily[] = [
       arabicName: 'محمد بن سلمان آل سعود',
       slug: 'mohammed-bin-salman',
       title: 'Crown Prince and Prime Minister of Saudi Arabia',
-      portraitUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'
+      portraitUrl: '/images/leaders/mbs.jpg'
     },
     rulers: [
       {
@@ -38,7 +38,7 @@ export const royalFamiliesData: RoyalFamily[] = [
         slug: 'king-salman',
         reign: '2015 — Present',
         title: 'King of Saudi Arabia',
-        portraitUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+        portraitUrl: '/images/leaders/king-salman.jpg',
         isCurrent: true
       },
       {
@@ -47,7 +47,7 @@ export const royalFamiliesData: RoyalFamily[] = [
         slug: 'king-abdullah',
         reign: '2005 — 2015',
         title: 'King of Saudi Arabia',
-        portraitUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80'
+        portraitUrl: '/images/leaders/king-abdullah.jpg'
       },
       {
         name: 'King Fahd bin Abdulaziz',
@@ -71,7 +71,7 @@ export const royalFamiliesData: RoyalFamily[] = [
         slug: 'king-faisal',
         reign: '1964 — 1975',
         title: 'King of Saudi Arabia',
-        portraitUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80'
+        portraitUrl: '/images/leaders/king-faisal.jpg'
       },
       {
         name: 'King Saud bin Abdulaziz',
@@ -87,7 +87,7 @@ export const royalFamiliesData: RoyalFamily[] = [
         slug: 'king-abdulaziz',
         reign: '1932 — 1953',
         title: 'Founder & First King of Saudi Arabia',
-        portraitUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=600&q=80'
+        portraitUrl: '/images/leaders/king-abdulaziz.jpg'
       }
     ],
     familyTree: {

@@ -11,7 +11,7 @@ export const articlesData: Article[] = [
     readTime: 8,
     status: 'PUBLISHED',
     publishedAt: '2024-02-22',
-    heroImageUrl: 'https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/palaces/yamamah-palace.jpg',
     leadParagraph: 'The emergence of the modern Kingdom of Saudi Arabia in 1932 is the culmination of three centuries of state-building that began in the oasis citadel of Diriyah in 1727. Through periods of imperial resistance, regional transformation, and diplomatic perseverance, the House of Saud unified the Arabian Peninsula into a sovereign global power.',
     body: 'The narrative of Saudi statehood unfolds across three distinct yet continuous chapters: the First Saudi State (1727–1818), the Second Saudi State (1824–1891), and the Third Saudi State culminating in the unified Kingdom of Saudi Arabia under King Abdulaziz Al Saud in 1932.',
     sections: [
@@ -69,7 +69,7 @@ export const articlesData: Article[] = [
     readTime: 7,
     status: 'PUBLISHED',
     publishedAt: '2024-01-15',
-    heroImageUrl: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/riyadh.jpg',
     leadParagraph: 'Few urban stories in modern human history rival the transformation of Dubai from an 1833 pearl-diving settlement on Dubai Creek into a global epicenter of commerce, aviation, architecture, and technology under the House of Al Maktoum.',
     body: 'Dubai’s evolution was never accidental; it was forged by bold infrastructural decisions, free-trade foresight, and charismatic leadership spanning Sheikh Rashid bin Saeed and Sheikh Mohammed bin Rashid Al Maktoum.',
     sections: [
@@ -114,7 +114,7 @@ export const articlesData: Article[] = [
     readTime: 9,
     status: 'PUBLISHED',
     publishedAt: '2024-03-10',
-    heroImageUrl: 'https://images.unsplash.com/photo-1579606032834-a74bdc18151f?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/alula.jpg',
     leadParagraph: 'Carved into the sheer sandstone massifs of Petra in Jordan and Hegra in Saudi Arabia, the Nabataeans engineered an ancient Arabian commercial empire that controlled the frankincense, myrrh, and spice routes of antiquity.',
     body: 'The Nabataeans combined Arabian desert survival mastery with Hellenistic architectural aesthetics and peerless hydraulic engineering.',
     sections: [
@@ -155,7 +155,7 @@ export const articlesData: Article[] = [
     readTime: 10,
     status: 'PUBLISHED',
     publishedAt: '2024-04-05',
-    heroImageUrl: 'https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/history/andalus.jpg',
     leadParagraph: 'For nearly 800 years (711–1492), Al-Andalus in the Iberian Peninsula represented a radiant beacon of science, philosophical enquiry, architectural magnificence, and interfaith intellectual translation in medieval Europe.',
     body: 'From the foundation of the Emirate of Córdoba by the fugitive Umayyad prince Abd al-Rahman I in 756 CE to the final days of the Nasrid kingdom of Granada in 1492, Al-Andalus fundamentally shaped European and Arab civilization.',
     sections: [

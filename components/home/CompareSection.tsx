@@ -1,388 +1,715 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Scale, ArrowRight, Plus, X, Globe, Building2, Users, MapPin, Landmark, DollarSign, Award, ChevronRight, Compass } from 'lucide-react';
-import { countriesData, Country } from '@/lib/data';
+import { 
+  Scale, 
+  ArrowRightLeft, 
+  ChevronDown, 
+  Users, 
+  MapPin, 
+  DollarSign, 
+  Building2, 
+  Landmark, 
+  Coins, 
+  Globe2, 
+  ArrowRight,
+  TrendingUp,
+  Sparkles,
+  Award,
+  ShieldCheck,
+  Percent,
+  Compass,
+  Crown
+} from 'lucide-react';
+import { countriesData, citiesData, Country, City } from '@/lib/data';
 import { useLanguage } from '../LanguageProvider';
+
+type CompareMode = 'countries' | 'cities';
+type MetricCategory = 'economy' | 'demographics' | 'geography' | 'governance' | 'all';
 
 export const CompareSection: React.FC = () => {
   const { language, isRTL } = useLanguage();
+  const [mode, setMode] = useState<CompareMode>('countries');
+  
+  // Default open tab is 'Economy & Wealth'
+  const [category, setCategory] = useState<MetricCategory>('economy');
 
-  // Preset comparison profiles
-  const presets = [
-    {
-      id: 'gcc-trio',
-      name: 'GCC Gulf Trio',
-      nameAr: 'ثلاثي الخليج العربي',
-      slugs: ['saudi-arabia', 'united-arab-emirates', 'qatar'],
-    },
-    {
-      id: 'ancient-civilizations',
-      name: 'Historic Empires & Civilizations',
-      nameAr: 'الحضارات التاريخية الكبرى',
-      slugs: ['egypt', 'saudi-arabia', 'iraq', 'jordan'],
-    },
-    {
-      id: 'economic-powerhouses',
-      name: 'Leading Economies',
-      nameAr: 'أكبر الاقتصادات العربية',
-      slugs: ['saudi-arabia', 'united-arab-emirates', 'egypt', 'kuwait'],
-    },
-    {
-      id: 'maghreb-levant',
-      name: 'Maghreb & Levant',
-      nameAr: 'المغرب العربي والمشرق',
-      slugs: ['morocco', 'algeria', 'lebanon', 'oman'],
-    },
+  // Country Comparison State (Default 2 countries)
+  const [countryA, setCountryA] = useState<string>('saudi-arabia');
+  const [countryB, setCountryB] = useState<string>('united-arab-emirates');
+  const [isRotating, setIsRotating] = useState<boolean>(false);
+
+  // City Comparison State (Default 2 cities)
+  const [cityA, setCityA] = useState<string>('riyadh');
+  const [cityB, setCityB] = useState<string>('dubai');
+
+  // Selected Objects
+  const selectedCountryA = useMemo(() => {
+    return countriesData.find((c) => c.slug === countryA) || countriesData[0];
+  }, [countryA]);
+
+  const selectedCountryB = useMemo(() => {
+    return countriesData.find((c) => c.slug === countryB) || countriesData[1];
+  }, [countryB]);
+
+  const selectedCityA = useMemo(() => {
+    return citiesData.find((c) => c.slug === cityA) || citiesData[0];
+  }, [cityA]);
+
+  const selectedCityB = useMemo(() => {
+    return citiesData.find((c) => c.slug === cityB) || citiesData[1];
+  }, [cityB]);
+
+  // Swap function
+  const handleSwap = () => {
+    setIsRotating(true);
+    if (mode === 'countries') {
+      const temp = countryA;
+      setCountryA(countryB);
+      setCountryB(temp);
+    } else {
+      const temp = cityA;
+      setCityA(cityB);
+      setCityB(temp);
+    }
+    setTimeout(() => setIsRotating(false), 300);
+  };
+
+  // Maximum benchmark values for relative visual ratio bars
+  const maxPop = Math.max(selectedCountryA.population, selectedCountryB.population, 1);
+  const maxArea = Math.max(selectedCountryA.areaKm2, selectedCountryB.areaKm2, 1);
+  const maxGdp = Math.max(selectedCountryA.gdpNominalBillion, selectedCountryB.gdpNominalBillion, 1);
+  const maxGdpCapita = Math.max(selectedCountryA.gdpPerCapita, selectedCountryB.gdpPerCapita, 1);
+
+  const maxCityPop = Math.max(selectedCityA.population, selectedCityB.population, 1);
+
+  // Tab definitions: Economy first, All Metrics last
+  const metricTabs = [
+    { id: 'economy', label: 'Economy & Wealth', labelAr: 'الاقتصاد والناتج', icon: DollarSign },
+    { id: 'demographics', label: 'Demographics & Society', labelAr: 'السكان والمجتمع', icon: Users },
+    { id: 'geography', label: 'Land & Territory', labelAr: 'المساحة والجغرافيا', icon: MapPin },
+    { id: 'governance', label: 'Governance & Capital', labelAr: 'نظام الحكم والعاصمة', icon: Landmark },
+    { id: 'all', label: 'All Metrics', labelAr: 'كافة المؤشرات', icon: Scale },
   ];
 
-  const [selectedSlugs, setSelectedSlugs] = useState<string[]>([
-    'saudi-arabia',
-    'united-arab-emirates',
-    'qatar',
-  ]);
-
-  const [activePreset, setActivePreset] = useState<string>('gcc-trio');
-
-  const handleCountryChange = (index: number, newSlug: string) => {
-    const updated = [...selectedSlugs];
-    updated[index] = newSlug;
-    setSelectedSlugs(updated);
-    setActivePreset('');
-  };
-
-  const handleApplyPreset = (preset: typeof presets[0]) => {
-    setSelectedSlugs(preset.slugs);
-    setActivePreset(preset.id);
-  };
-
-  const addColumn = () => {
-    if (selectedSlugs.length < 4) {
-      const unselected = countriesData.find((c) => !selectedSlugs.includes(c.slug));
-      if (unselected) {
-        setSelectedSlugs([...selectedSlugs, unselected.slug]);
-        setActivePreset('');
-      }
-    }
-  };
-
-  const removeColumn = (index: number) => {
-    if (selectedSlugs.length > 2) {
-      setSelectedSlugs(selectedSlugs.filter((_, i) => i !== index));
-      setActivePreset('');
-    }
-  };
-
-  const selectedCountries: Country[] = selectedSlugs
-    .map((slug) => countriesData.find((c) => c.slug === slug))
-    .filter((c): c is Country => Boolean(c));
-
-  // Max values across entire dataset for realistic proportional gauges
-  const maxPop = Math.max(...countriesData.map((c) => c.population));
-  const maxArea = Math.max(...countriesData.map((c) => c.areaKm2));
-  const maxGdp = Math.max(...countriesData.map((c) => c.gdpNominalBillion));
-
   return (
-    <section className="relative bg-white py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-border overflow-hidden">
-      {/* Decorative Background Arabesque Watermark */}
-      <div className="absolute top-0 right-0 w-96 h-96 opacity-[0.03] pointer-events-none transform translate-x-1/3 -translate-y-1/3">
-        <svg viewBox="0 0 100 100" fill="currentColor" className="w-full h-full text-forest">
-          <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="2" fill="none" />
-          <rect x="25" y="25" width="50" height="50" transform="rotate(45 50 50)" stroke="currentColor" strokeWidth="1" fill="none" />
-          <circle cx="50" cy="50" r="20" stroke="currentColor" strokeWidth="1" fill="none" />
-        </svg>
-      </div>
-
-      <div className="mx-auto max-w-archival">
+    <section 
+      id="compare-section"
+      className="relative bg-[#FAF9F6] py-16 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-border overflow-hidden"
+      aria-label="Compare Arab Sovereign Nations"
+    >
+      {/* Expanded Container Width to max-w-6xl for generous, spacious presentation */}
+      <div className="mx-auto max-w-6xl relative z-10">
+        
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 pb-6 border-b border-border gap-6">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF8F5] border border-[#E5E7EB] text-antiqueGold text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-border/80 gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#D5CDBC] text-antiqueGold text-xs font-mono font-semibold uppercase tracking-wider mb-2 shadow-2xs">
               <Scale className="h-3.5 w-3.5" />
-              <span>{language === 'ar' ? 'مصفوفة المقارنة التفاعلية' : 'Comparative Analytics Matrix'}</span>
+              <span>{language === 'ar' ? 'مقارنة مباشرة ثنائية' : 'Side-by-Side Comparison'}</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-ink font-bold tracking-tight">
-              {language === 'ar' ? 'مقارنة دول العالم العربي' : 'Compare Arab Sovereign Nations'}
+              {language === 'ar' 
+                ? (mode === 'countries' ? 'مقارنة الدول العربية جنباً إلى جنب' : 'مقارنة الحواضر والمدن العربية')
+                : (mode === 'countries' ? 'Compare Arab Sovereign Nations' : 'Compare Arab Metropolises & Cities')}
             </h2>
-            <p className="text-ink-muted text-sm sm:text-base mt-3 leading-relaxed">
+            <p className="text-xs sm:text-sm text-gray-500 font-sans mt-2 max-w-3xl">
               {language === 'ar'
-                ? 'مقارنة إحصائية وجيوسياسية واقتصادية متعددة الأبعاد تتيح فحص مؤشرات السكان والمساحة والناتج المحلي وأنظمة الحكم جنباً إلى جنب.'
-                : 'Explore multi-dimensional demographic, geopolitical, and macroeconomic comparisons side-by-side across the 22 sovereign nations of the Arab World.'}
+                ? 'تحليل إحصائي واقتصادي ومؤسسي دقيق ومباشر بين دولتين أو مدينتين مع مقارنة المؤشرات التنموية والمالية.'
+                : 'Direct statistical, macroeconomic, and institutional metrics comparison between sovereign nations and key metropolises across the Arab world.'}
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href="/compare"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest text-white hover:bg-forest-light text-xs font-semibold tracking-wider transition-all shadow-sm hover:shadow"
+          {/* Mode Switcher: Countries vs Cities */}
+          <div className="inline-flex items-center p-1 rounded-full bg-white border border-[#D5CDBC] shadow-sm shrink-0 self-start md:self-auto">
+            <button
+              type="button"
+              onClick={() => setMode('countries')}
+              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-sans font-semibold transition-all cursor-pointer ${
+                mode === 'countries'
+                  ? 'bg-forest text-white shadow-xs'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
             >
-              <span>{language === 'ar' ? 'فتح المصفوفة الكاملة' : 'Full 22-Nation Matrix'}</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+              {language === 'ar' ? 'الدول (٢٢)' : 'Countries (22)'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode('cities')}
+              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-sans font-semibold transition-all cursor-pointer ${
+                mode === 'cities'
+                  ? 'bg-forest text-white shadow-xs'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              {language === 'ar' ? 'المدن' : 'Cities'}
+            </button>
           </div>
         </div>
 
-        {/* Quick Presets & Control Bar */}
-        <div className="bg-[#FAF8F5] border border-border rounded-2xl p-4 sm:p-5 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-ink-muted mr-1">
-              {language === 'ar' ? 'مجموعات سريعة:' : 'Presets:'}
-            </span>
-            {presets.map((preset) => {
-              const isActive = activePreset === preset.id;
+        {/* ================= GOOGLE-STYLE EXPANDED COMPARISON CARD ================= */}
+        <div className="bg-gradient-to-b from-white via-[#FCFBF9] to-white rounded-3xl border border-[#D5CDBC]/90 shadow-[0_10px_40px_rgba(0,0,0,0.06)] p-6 sm:p-8 md:p-12 mb-10 transition-all">
+          
+          {/* Dual Dropdown Selectors & Linked Highlight Cards with Central Swap */}
+          <div className="grid grid-cols-1 lg:grid-cols-11 gap-4 lg:gap-6 items-center mb-8">
+            
+            {/* Left Column: Side A */}
+            <div className="lg:col-span-5 space-y-3">
+              {/* Selector A */}
+              <div className="relative">
+                <select
+                  value={mode === 'countries' ? countryA : cityA}
+                  onChange={(e) => mode === 'countries' ? setCountryA(e.target.value) : setCityA(e.target.value)}
+                  className="w-full appearance-none px-4 py-3.5 pr-10 rounded-2xl border border-gray-300 bg-white text-gray-900 font-sans font-semibold text-sm sm:text-base hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest cursor-pointer shadow-xs transition-all"
+                >
+                  {mode === 'countries'
+                    ? countriesData.map((c) => (
+                        <option key={c.slug} value={c.slug} disabled={c.slug === countryB}>
+                          {c.name} ({language === 'ar' ? c.arabicName : c.isoCode})
+                        </option>
+                      ))
+                    : citiesData.map((c) => (
+                        <option key={c.slug} value={c.slug} disabled={c.slug === cityB}>
+                          {c.name} ({c.country})
+                        </option>
+                      ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                  <ChevronDown className="w-4 h-4" />
+                </div>
+              </div>
+
+              {/* Linked Summary Card A */}
+              <div className="p-4 sm:p-5 rounded-2xl border border-[#D5CDBC]/70 bg-gradient-to-br from-[#FAF9F6] to-white shadow-inner flex items-center justify-between">
+                <div>
+                  <span className="block text-[11px] font-mono text-gray-500 uppercase tracking-wider font-bold">
+                    {mode === 'countries' ? (language === 'ar' ? 'الناتج الاسمي' : 'Nominal GDP') : (language === 'ar' ? 'الدولة' : 'Country')}
+                  </span>
+                  <div className="font-sans font-bold text-xl sm:text-2xl text-forest mt-0.5">
+                    {mode === 'countries' ? `$${selectedCountryA.gdpNominalBillion.toLocaleString()}B` : selectedCityA.country}
+                  </div>
+                  <span className="text-xs text-gray-500 font-sans">
+                    {mode === 'countries' ? `${selectedCountryA.capital} (Capital)` : (selectedCityA.isCapital ? 'National Capital' : 'Major Metropolis')}
+                  </span>
+                </div>
+
+                <div className="text-right">
+                  <span className="block text-[11px] font-mono text-gray-500 uppercase tracking-wider font-bold">
+                    {language === 'ar' ? 'السكان' : 'Population'}
+                  </span>
+                  <div className="font-sans font-bold text-lg sm:text-xl text-gray-900 mt-0.5">
+                    {mode === 'countries' ? `${(selectedCountryA.population / 1_000_000).toFixed(2)}M` : `${(selectedCityA.population / 1_000_000).toFixed(2)}M`}
+                  </div>
+                  <span className="text-xs font-mono font-bold text-antiqueGold">
+                    {mode === 'countries' ? selectedCountryA.currencySymbol || selectedCountryA.currency.split(' ')[0] : (selectedCityA.isCapital ? 'Capital' : 'Metropolis')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Middle: Swap Button */}
+            <div className="lg:col-span-1 flex justify-center py-2 lg:py-0">
+              <button
+                onClick={handleSwap}
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-white hover:bg-forest text-gray-700 hover:text-white border-2 border-[#D5CDBC] hover:border-forest shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer"
+                title="Swap Selection"
+                aria-label="Swap Selection"
+              >
+                <ArrowRightLeft className={`w-5 h-5 transition-transform duration-300 ${isRotating ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+
+            {/* Right Column: Side B */}
+            <div className="lg:col-span-5 space-y-3">
+              {/* Selector B */}
+              <div className="relative">
+                <select
+                  value={mode === 'countries' ? countryB : cityB}
+                  onChange={(e) => mode === 'countries' ? setCountryB(e.target.value) : setCityB(e.target.value)}
+                  className="w-full appearance-none px-4 py-3.5 pr-10 rounded-2xl border border-gray-300 bg-white text-gray-900 font-sans font-semibold text-sm sm:text-base hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest cursor-pointer shadow-xs transition-all"
+                >
+                  {mode === 'countries'
+                    ? countriesData.map((c) => (
+                        <option key={c.slug} value={c.slug} disabled={c.slug === countryA}>
+                          {c.name} ({language === 'ar' ? c.arabicName : c.isoCode})
+                        </option>
+                      ))
+                    : citiesData.map((c) => (
+                        <option key={c.slug} value={c.slug} disabled={c.slug === cityA}>
+                          {c.name} ({c.country})
+                        </option>
+                      ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                  <ChevronDown className="w-4 h-4" />
+                </div>
+              </div>
+
+              {/* Linked Summary Card B */}
+              <div className="p-4 sm:p-5 rounded-2xl border border-[#D5CDBC]/70 bg-gradient-to-br from-[#FAF9F6] to-white shadow-inner flex items-center justify-between">
+                <div>
+                  <span className="block text-[11px] font-mono text-gray-500 uppercase tracking-wider font-bold">
+                    {mode === 'countries' ? (language === 'ar' ? 'الناتج الاسمي' : 'Nominal GDP') : (language === 'ar' ? 'الدولة' : 'Country')}
+                  </span>
+                  <div className="font-sans font-bold text-xl sm:text-2xl text-antiqueGold mt-0.5">
+                    {mode === 'countries' ? `$${selectedCountryB.gdpNominalBillion.toLocaleString()}B` : selectedCityB.country}
+                  </div>
+                  <span className="text-xs text-gray-500 font-sans">
+                    {mode === 'countries' ? `${selectedCountryB.capital} (Capital)` : (selectedCityB.isCapital ? 'National Capital' : 'Major Metropolis')}
+                  </span>
+                </div>
+
+                <div className="text-right">
+                  <span className="block text-[11px] font-mono text-gray-500 uppercase tracking-wider font-bold">
+                    {language === 'ar' ? 'السكان' : 'Population'}
+                  </span>
+                  <div className="font-sans font-bold text-lg sm:text-xl text-gray-900 mt-0.5">
+                    {mode === 'countries' ? `${(selectedCountryB.population / 1_000_000).toFixed(2)}M` : `${(selectedCityB.population / 1_000_000).toFixed(2)}M`}
+                  </div>
+                  <span className="text-xs font-mono font-bold text-antiqueGold">
+                    {mode === 'countries' ? selectedCountryB.currencySymbol || selectedCountryB.currency.split(' ')[0] : (selectedCityB.isCapital ? 'Capital' : 'Metropolis')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Metric Category Tabs: Economy First, All Metrics at the End */}
+          <div className="flex items-center gap-2 sm:gap-2.5 mb-8 overflow-x-auto pb-2 scrollbar-none">
+            {metricTabs.map((tab) => {
+              const isActive = category === tab.id;
+              const IconComp = tab.icon;
               return (
                 <button
-                  key={preset.id}
-                  onClick={() => handleApplyPreset(preset)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  key={tab.id}
+                  onClick={() => setCategory(tab.id as MetricCategory)}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-sans transition-all cursor-pointer whitespace-nowrap font-medium ${
                     isActive
-                      ? 'bg-forest text-white shadow-sm'
-                      : 'bg-white border border-border text-ink hover:border-antiqueGold hover:text-forest'
+                      ? 'bg-gray-900 text-white font-bold shadow-sm'
+                      : 'bg-gray-100/80 text-gray-600 hover:text-gray-900 hover:bg-gray-200'
                   }`}
                 >
-                  {language === 'ar' ? preset.nameAr : preset.name}
+                  <IconComp className="w-3.5 h-3.5 shrink-0" />
+                  <span>{language === 'ar' ? tab.labelAr : tab.label}</span>
                 </button>
               );
             })}
           </div>
 
-          <div className="flex items-center gap-3 self-end md:self-auto">
-            <span className="text-xs text-ink-muted font-mono">
-              {language === 'ar'
-                ? `${selectedCountries.length} دول مختارة`
-                : `${selectedCountries.length} of 4 Nations`}
-            </span>
-            {selectedSlugs.length < 4 && (
-              <button
-                onClick={addColumn}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-border hover:border-antiqueGold text-forest text-xs font-semibold transition-colors shadow-sm"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                <span>{language === 'ar' ? 'إضافة دولة' : 'Add Nation'}</span>
-              </button>
-            )}
-          </div>
-        </div>
+          {/* ================= DETAILED COMPARISON BREAKDOWN (THE RESULT) ================= */}
+          {mode === 'countries' ? (
+            <div className="space-y-6">
+              
+              {/* 1. Nominal GDP (Economy) */}
+              {(category === 'economy' || category === 'all') && (
+                <div className="p-5 sm:p-6 rounded-2xl bg-white border border-gray-200 shadow-xs hover:border-gray-300 transition-all">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 rounded-lg bg-emerald-50 text-forest">
+                        <DollarSign className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-sans font-bold text-sm text-gray-900">
+                          {language === 'ar' ? 'الناتج المحلي الإجمالي الاسمي' : 'Nominal Gross Domestic Product'}
+                        </h4>
+                        <span className="text-[11px] font-mono text-gray-500">
+                          {language === 'ar' ? 'بالمليار دولار أمريكي' : 'Nominal GDP in USD Billions'}
+                        </span>
+                      </div>
+                    </div>
 
-        {/* Comparative Cards Grid */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${selectedCountries.length} gap-6`}>
-          {selectedCountries.map((country, idx) => {
-            const popPercent = Math.min(100, Math.round((country.population / maxPop) * 100));
-            const areaPercent = Math.min(100, Math.round((country.areaKm2 / maxArea) * 100));
-            const gdpPercent = Math.min(100, Math.round((country.gdpNominalBillion / maxGdp) * 100));
-
-            return (
-              <div
-                key={country.slug || idx}
-                className="group relative flex flex-col bg-white border border-border hover:border-antiqueGold rounded-2xl overflow-hidden shadow-sm hover:shadow-museum transition-all duration-300"
-              >
-                {/* Card Top: Country Selector & Header */}
-                <div className="p-5 border-b border-border bg-[#FCFBF8]">
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <select
-                      value={country.slug}
-                      onChange={(e) => handleCountryChange(idx, e.target.value)}
-                      className="w-full text-xs font-serif font-bold text-forest bg-white border border-border rounded-xl px-3 py-1.5 focus:outline-none focus:border-antiqueGold shadow-sm cursor-pointer"
-                    >
-                      {countriesData.map((c) => (
-                        <option key={c.slug} value={c.slug}>
-                          {c.name} ({c.arabicName})
-                        </option>
-                      ))}
-                    </select>
-                    {selectedSlugs.length > 2 && (
-                      <button
-                        onClick={() => removeColumn(idx)}
-                        className="p-1.5 text-ink-muted hover:text-red-600 rounded-lg hover:bg-white transition-colors"
-                        title="Remove column"
-                        aria-label={`Remove ${country.name}`}
-                      >
-                        <X className="h-3.5 w-3.5" />
-                      </button>
-                    )}
+                    <div className="flex items-center gap-6 text-sm font-sans">
+                      <div className="text-left sm:text-right">
+                        <span className="text-[10px] font-mono text-gray-400 block">{selectedCountryA.name}</span>
+                        <span className="font-bold text-forest text-base sm:text-lg">${selectedCountryA.gdpNominalBillion.toLocaleString()}B</span>
+                      </div>
+                      <span className="text-gray-300 font-light text-lg">vs</span>
+                      <div>
+                        <span className="text-[10px] font-mono text-gray-400 block">{selectedCountryB.name}</span>
+                        <span className="font-bold text-antiqueGold text-base sm:text-lg">${selectedCountryB.gdpNominalBillion.toLocaleString()}B</span>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Country Flag & Names */}
-                  <div className="flex items-center gap-3.5 pt-1">
-                    <div className="relative w-12 h-8 rounded-lg overflow-hidden border border-border shadow-sm flex-shrink-0 bg-stone-100">
-                      <img
-                        src={country.flagUrl || '/images/hero.jpg'}
-                        alt={`${country.name} Flag`}
-                        className="w-full h-full object-cover"
+                  {/* Dual-Sided Proportional Bar */}
+                  <div className="grid grid-cols-2 gap-2 h-3.5 bg-gray-100 rounded-full p-0.5 overflow-hidden">
+                    <div className="flex justify-end">
+                      <div 
+                        className="bg-forest h-full rounded-full transition-all duration-700 shadow-2xs"
+                        style={{ width: `${Math.max(8, Math.round((selectedCountryA.gdpNominalBillion / maxGdp) * 100))}%` }}
                       />
                     </div>
-                    <div className="min-w-0">
-                      <h3 className="font-serif font-bold text-lg text-ink truncate leading-tight">
-                        {country.name}
-                      </h3>
-                      <div className="text-xs font-arabicHeading text-antiqueGold truncate">
-                        {country.arabicName}
+                    <div className="flex justify-start">
+                      <div 
+                        className="bg-antiqueGold h-full rounded-full transition-all duration-700 shadow-2xs"
+                        style={{ width: `${Math.max(8, Math.round((selectedCountryB.gdpNominalBillion / maxGdp) * 100))}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 2. GDP Per Capita (Economy) */}
+              {(category === 'economy' || category === 'all') && (
+                <div className="p-5 sm:p-6 rounded-2xl bg-white border border-gray-200 shadow-xs hover:border-gray-300 transition-all">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 rounded-lg bg-amber-50 text-antiqueGold">
+                        <TrendingUp className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-sans font-bold text-sm text-gray-900">
+                          {language === 'ar' ? 'متوسط نصيب الفرد من الناتج' : 'GDP Per Capita Income'}
+                        </h4>
+                        <span className="text-[11px] font-mono text-gray-500">
+                          {language === 'ar' ? 'الدخل السنوي للفرد بالدولار' : 'Annual Income per Citizen (USD)'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-6 text-sm font-sans">
+                      <div className="text-left sm:text-right">
+                        <span className="text-[10px] font-mono text-gray-400 block">{selectedCountryA.name}</span>
+                        <span className="font-bold text-forest text-base sm:text-lg">${selectedCountryA.gdpPerCapita.toLocaleString()}</span>
+                      </div>
+                      <span className="text-gray-300 font-light text-lg">vs</span>
+                      <div>
+                        <span className="text-[10px] font-mono text-gray-400 block">{selectedCountryB.name}</span>
+                        <span className="font-bold text-antiqueGold text-base sm:text-lg">${selectedCountryB.gdpPerCapita.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 h-3.5 bg-gray-100 rounded-full p-0.5 overflow-hidden">
+                    <div className="flex justify-end">
+                      <div 
+                        className="bg-forest h-full rounded-full transition-all duration-700 shadow-2xs"
+                        style={{ width: `${Math.max(8, Math.round((selectedCountryA.gdpPerCapita / maxGdpCapita) * 100))}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-start">
+                      <div 
+                        className="bg-antiqueGold h-full rounded-full transition-all duration-700 shadow-2xs"
+                        style={{ width: `${Math.max(8, Math.round((selectedCountryB.gdpPerCapita / maxGdpCapita) * 100))}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 3. Total Population (Demographics) */}
+              {(category === 'demographics' || category === 'all') && (
+                <div className="p-5 sm:p-6 rounded-2xl bg-white border border-gray-200 shadow-xs hover:border-gray-300 transition-all">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 rounded-lg bg-blue-50 text-blue-700">
+                        <Users className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-sans font-bold text-sm text-gray-900">
+                          {language === 'ar' ? 'إجمالي التعداد السكاني' : 'Sovereign Population'}
+                        </h4>
+                        <span className="text-[11px] font-mono text-gray-500">
+                          {language === 'ar' ? 'التعداد الموثق بالأمم المتحدة' : 'UN Verified Demographic Baseline'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-6 text-sm font-sans">
+                      <div className="text-left sm:text-right">
+                        <span className="text-[10px] font-mono text-gray-400 block">{selectedCountryA.name}</span>
+                        <span className="font-bold text-forest text-base sm:text-lg">{(selectedCountryA.population / 1_000_000).toFixed(2)}M</span>
+                      </div>
+                      <span className="text-gray-300 font-light text-lg">vs</span>
+                      <div>
+                        <span className="text-[10px] font-mono text-gray-400 block">{selectedCountryB.name}</span>
+                        <span className="font-bold text-antiqueGold text-base sm:text-lg">{(selectedCountryB.population / 1_000_000).toFixed(2)}M</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 h-3.5 bg-gray-100 rounded-full p-0.5 overflow-hidden">
+                    <div className="flex justify-end">
+                      <div 
+                        className="bg-forest h-full rounded-full transition-all duration-700 shadow-2xs"
+                        style={{ width: `${Math.max(8, Math.round((selectedCountryA.population / maxPop) * 100))}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-start">
+                      <div 
+                        className="bg-antiqueGold h-full rounded-full transition-all duration-700 shadow-2xs"
+                        style={{ width: `${Math.max(8, Math.round((selectedCountryB.population / maxPop) * 100))}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 4. Land Area (Geography) */}
+              {(category === 'geography' || category === 'all') && (
+                <div className="p-5 sm:p-6 rounded-2xl bg-white border border-gray-200 shadow-xs hover:border-gray-300 transition-all">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 rounded-lg bg-teal-50 text-teal-700">
+                        <MapPin className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-sans font-bold text-sm text-gray-900">
+                          {language === 'ar' ? 'المساحة الجغرافية الكلية' : 'Total Territorial Land Area'}
+                        </h4>
+                        <span className="text-[11px] font-mono text-gray-500">
+                          {language === 'ar' ? 'بالكيلومتر المربع' : 'Square Kilometers (km²)'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-6 text-sm font-sans">
+                      <div className="text-left sm:text-right">
+                        <span className="text-[10px] font-mono text-gray-400 block">{selectedCountryA.name}</span>
+                        <span className="font-bold text-forest text-base sm:text-lg">{selectedCountryA.areaKm2.toLocaleString()} km²</span>
+                      </div>
+                      <span className="text-gray-300 font-light text-lg">vs</span>
+                      <div>
+                        <span className="text-[10px] font-mono text-gray-400 block">{selectedCountryB.name}</span>
+                        <span className="font-bold text-antiqueGold text-base sm:text-lg">{selectedCountryB.areaKm2.toLocaleString()} km²</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 h-3.5 bg-gray-100 rounded-full p-0.5 overflow-hidden">
+                    <div className="flex justify-end">
+                      <div 
+                        className="bg-forest h-full rounded-full transition-all duration-700 shadow-2xs"
+                        style={{ width: `${Math.max(8, Math.round((selectedCountryA.areaKm2 / maxArea) * 100))}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-start">
+                      <div 
+                        className="bg-antiqueGold h-full rounded-full transition-all duration-700 shadow-2xs"
+                        style={{ width: `${Math.max(8, Math.round((selectedCountryB.areaKm2 / maxArea) * 100))}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 5. Qualitative Governance & Capital Matrix */}
+              {(category === 'governance' || category === 'all') && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Card A Details */}
+                  <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                      <div>
+                        <h4 className="font-serif font-bold text-lg text-gray-900">
+                          {selectedCountryA.name}
+                        </h4>
+                        <span className="text-xs font-arabicHeading font-semibold text-antiqueGold">
+                          {selectedCountryA.arabicName}
+                        </span>
+                      </div>
+                      <span className="px-2.5 py-1 rounded-lg bg-[#FAF9F6] border border-gray-200 text-xs font-mono font-bold text-forest">
+                        {selectedCountryA.region}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2.5 text-xs font-sans">
+                      <div className="flex items-center justify-between py-1 border-b border-gray-50 text-gray-600">
+                        <span>{language === 'ar' ? 'العاصمة الرسمية:' : 'National Capital:'}</span>
+                        <span className="font-bold text-gray-900">{selectedCountryA.capital}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1 border-b border-gray-50 text-gray-600">
+                        <span>{language === 'ar' ? 'العملة الوطنية:' : 'Official Currency:'}</span>
+                        <span className="font-bold text-gray-900">{selectedCountryA.currency}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1 border-b border-gray-50 text-gray-600">
+                        <span>{language === 'ar' ? 'نظام الحكم:' : 'Government System:'}</span>
+                        <span className="font-bold text-gray-900">{selectedCountryA.governmentType}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1 text-gray-600">
+                        <span>{language === 'ar' ? 'سنة التأسيس / التوحيد:' : 'Founding / Union Year:'}</span>
+                        <span className="font-bold text-forest">{selectedCountryA.foundingYear || 'Historic'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card B Details */}
+                  <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                      <div>
+                        <h4 className="font-serif font-bold text-lg text-gray-900">
+                          {selectedCountryB.name}
+                        </h4>
+                        <span className="text-xs font-arabicHeading font-semibold text-antiqueGold">
+                          {selectedCountryB.arabicName}
+                        </span>
+                      </div>
+                      <span className="px-2.5 py-1 rounded-lg bg-[#FAF9F6] border border-gray-200 text-xs font-mono font-bold text-antiqueGold">
+                        {selectedCountryB.region}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2.5 text-xs font-sans">
+                      <div className="flex items-center justify-between py-1 border-b border-gray-50 text-gray-600">
+                        <span>{language === 'ar' ? 'العاصمة الرسمية:' : 'National Capital:'}</span>
+                        <span className="font-bold text-gray-900">{selectedCountryB.capital}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1 border-b border-gray-50 text-gray-600">
+                        <span>{language === 'ar' ? 'العملة الوطنية:' : 'Official Currency:'}</span>
+                        <span className="font-bold text-gray-900">{selectedCountryB.currency}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1 border-b border-gray-50 text-gray-600">
+                        <span>{language === 'ar' ? 'نظام الحكم:' : 'Government System:'}</span>
+                        <span className="font-bold text-gray-900">{selectedCountryB.governmentType}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-1 text-gray-600">
+                        <span>{language === 'ar' ? 'سنة التأسيس / التوحيد:' : 'Founding / Union Year:'}</span>
+                        <span className="font-bold text-forest">{selectedCountryB.foundingYear || 'Historic'}</span>
                       </div>
                     </div>
                   </div>
                 </div>
+              )}
 
-                {/* Card Body: Metric Comparison Rows */}
-                <div className="p-5 space-y-4 flex-1 text-xs">
-                  {/* Region & Government */}
-                  <div className="grid grid-cols-2 gap-3 pb-3 border-b border-subtle">
+            </div>
+          ) : (
+            /* City Comparison Breakdown */
+            <div className="space-y-6">
+              
+              {/* City Population Row */}
+              <div className="p-5 sm:p-6 rounded-2xl bg-white border border-gray-200 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 rounded-lg bg-blue-50 text-blue-700">
+                      <Users className="w-4 h-4" />
+                    </div>
                     <div>
-                      <span className="block text-[11px] font-mono text-ink-muted uppercase">
-                        {language === 'ar' ? 'الإقليم' : 'Region'}
-                      </span>
-                      <span className="font-semibold text-ink mt-0.5 inline-block">
-                        {country.region}
+                      <h4 className="font-sans font-bold text-sm text-gray-900">
+                        {language === 'ar' ? 'سكان الحاضرة الكبرى' : 'Metropolitan Urban Population'}
+                      </h4>
+                      <span className="text-[11px] font-mono text-gray-500">
+                        {language === 'ar' ? 'التعداد الحضري للمدينة' : 'Municipal Census Data'}
                       </span>
                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-6 text-sm font-sans">
+                    <div className="text-left sm:text-right">
+                      <span className="text-[10px] font-mono text-gray-400 block">{selectedCityA.name}</span>
+                      <span className="font-bold text-forest text-base sm:text-lg">{(selectedCityA.population / 1_000_000).toFixed(2)}M</span>
+                    </div>
+                    <span className="text-gray-300 font-light text-lg">vs</span>
                     <div>
-                      <span className="block text-[11px] font-mono text-ink-muted uppercase">
-                        {language === 'ar' ? 'العاصمة' : 'Capital'}
-                      </span>
-                      <span className="font-semibold text-ink mt-0.5 inline-block">
-                        {country.capital}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Government System */}
-                  <div className="pb-3 border-b border-subtle">
-                    <span className="block text-[11px] font-mono text-ink-muted uppercase">
-                      {language === 'ar' ? 'نظام الحكم' : 'Governance System'}
-                    </span>
-                    <span className="font-medium text-ink mt-0.5 block leading-snug">
-                      {country.governmentType}
-                    </span>
-                  </div>
-
-                  {/* Head of State */}
-                  <div className="pb-3 border-b border-subtle">
-                    <span className="block text-[11px] font-mono text-ink-muted uppercase">
-                      {language === 'ar' ? 'رأس الدولة' : 'Head of State'}
-                    </span>
-                    <span className="font-semibold text-forest mt-0.5 block truncate leading-snug" title={country.headOfState}>
-                      {country.headOfState}
-                    </span>
-                  </div>
-
-                  {/* Population with Bar */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-ink">
-                      <span className="text-[11px] font-mono text-ink-muted uppercase flex items-center gap-1">
-                        <Users className="h-3 w-3 text-antiqueGold" />
-                        {language === 'ar' ? 'السكان' : 'Population'}
-                      </span>
-                      <span className="font-bold text-ink">
-                        {(country.population / 1_000_000).toFixed(2)}M
-                      </span>
-                    </div>
-                    <div className="w-full bg-[#EFEFEF] h-1.5 rounded-full overflow-hidden">
-                      <div
-                        className="bg-forest h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.max(4, popPercent)}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Land Area with Bar */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-ink">
-                      <span className="text-[11px] font-mono text-ink-muted uppercase flex items-center gap-1">
-                        <MapPin className="h-3 w-3 text-antiqueGold" />
-                        {language === 'ar' ? 'المساحة' : 'Land Area'}
-                      </span>
-                      <span className="font-bold text-ink">
-                        {country.areaKm2.toLocaleString()} km²
-                      </span>
-                    </div>
-                    <div className="w-full bg-[#EFEFEF] h-1.5 rounded-full overflow-hidden">
-                      <div
-                        className="bg-antiqueGold h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.max(4, areaPercent)}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* GDP Nominal with Bar */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-ink">
-                      <span className="text-[11px] font-mono text-ink-muted uppercase flex items-center gap-1">
-                        <DollarSign className="h-3 w-3 text-antiqueGold" />
-                        {language === 'ar' ? 'الناتج الاسمي' : 'Nominal GDP'}
-                      </span>
-                      <span className="font-bold text-forest">
-                        ${country.gdpNominalBillion.toLocaleString()}B
-                      </span>
-                    </div>
-                    <div className="w-full bg-[#EFEFEF] h-1.5 rounded-full overflow-hidden">
-                      <div
-                        className="bg-forest-light h-full rounded-full transition-all duration-500"
-                        style={{ width: `${Math.max(4, gdpPercent)}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* GDP Per Capita & Currency */}
-                  <div className="grid grid-cols-2 gap-3 pt-2">
-                    <div className="bg-[#FAF8F5] p-2.5 rounded-xl border border-border">
-                      <span className="block text-[10px] font-mono text-ink-muted uppercase">
-                        {language === 'ar' ? 'دخل الفرد' : 'Per Capita'}
-                      </span>
-                      <span className="font-bold text-forest text-xs mt-0.5 block">
-                        ${country.gdpPerCapita.toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="bg-[#FAF8F5] p-2.5 rounded-xl border border-border">
-                      <span className="block text-[10px] font-mono text-ink-muted uppercase">
-                        {language === 'ar' ? 'العملة' : 'Currency'}
-                      </span>
-                      <span className="font-semibold text-ink text-xs mt-0.5 block truncate" title={country.currency}>
-                        {country.currencySymbol || country.currency.split(' ')[0]}
-                      </span>
+                      <span className="text-[10px] font-mono text-gray-400 block">{selectedCityB.name}</span>
+                      <span className="font-bold text-antiqueGold text-base sm:text-lg">{(selectedCityB.population / 1_000_000).toFixed(2)}M</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Card Footer: Link to Country Page */}
-                <div className="p-4 pt-0">
-                  <Link
-                    href={`/countries/${country.slug}`}
-                    className="w-full py-2 px-3 rounded-xl bg-[#FAF8F5] hover:bg-forest text-forest hover:text-white border border-border text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 transition-all duration-200"
-                  >
-                    <span>{language === 'ar' ? 'استعراض السجل الكامل' : 'View Full Profile'}</span>
-                    <ChevronRight className="h-3.5 w-3.5" />
-                  </Link>
+                <div className="grid grid-cols-2 gap-2 h-3.5 bg-gray-100 rounded-full p-0.5 overflow-hidden">
+                  <div className="flex justify-end">
+                    <div 
+                      className="bg-forest h-full rounded-full transition-all duration-700 shadow-2xs"
+                      style={{ width: `${Math.max(8, Math.round((selectedCityA.population / maxCityPop) * 100))}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-start">
+                    <div 
+                      className="bg-antiqueGold h-full rounded-full transition-all duration-700 shadow-2xs"
+                      style={{ width: `${Math.max(8, Math.round((selectedCityB.population / maxCityPop) * 100))}%` }}
+                    />
+                  </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
 
-        {/* Bottom Banner */}
-        <div className="mt-12 bg-gradient-to-r from-forest to-forest-dark text-white rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-museum">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 backdrop-blur-sm text-antiqueGold">
-              <Compass className="h-6 w-6" />
+              {/* City Qualitative Comparison Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* City A Card */}
+                <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div>
+                      <h4 className="font-serif font-bold text-lg text-gray-900">
+                        {selectedCityA.name}
+                      </h4>
+                      <span className="text-xs font-arabicHeading font-semibold text-antiqueGold">
+                        {selectedCityA.arabicName}
+                      </span>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-lg bg-[#FAF9F6] border border-gray-200 text-xs font-mono font-bold text-forest">
+                      {selectedCityA.country}
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 text-xs font-sans">
+                    <div>
+                      <span className="block text-gray-500 text-[11px] mb-1 font-semibold">{language === 'ar' ? 'المرتكز الاقتصادي والصناعي:' : 'Economic & Commercial Anchor:'}</span>
+                      <p className="font-medium text-gray-800 leading-relaxed bg-[#FAF9F6] p-3 rounded-xl border border-gray-100">{selectedCityA.economy}</p>
+                    </div>
+                    <div>
+                      <span className="block text-gray-500 text-[11px] mb-1 font-semibold">{language === 'ar' ? 'أبرز الأحياء والمعالم:' : 'Key Historic & Urban Districts:'}</span>
+                      <p className="font-medium text-gray-800 bg-[#FAF9F6] p-3 rounded-xl border border-gray-100">{selectedCityA.districts ? selectedCityA.districts.join(' · ') : 'Central & Historic'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* City B Card */}
+                <div className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div>
+                      <h4 className="font-serif font-bold text-lg text-gray-900">
+                        {selectedCityB.name}
+                      </h4>
+                      <span className="text-xs font-arabicHeading font-semibold text-antiqueGold">
+                        {selectedCityB.arabicName}
+                      </span>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-lg bg-[#FAF9F6] border border-gray-200 text-xs font-mono font-bold text-antiqueGold">
+                      {selectedCityB.country}
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 text-xs font-sans">
+                    <div>
+                      <span className="block text-gray-500 text-[11px] mb-1 font-semibold">{language === 'ar' ? 'المرتكز الاقتصادي والصناعي:' : 'Economic & Commercial Anchor:'}</span>
+                      <p className="font-medium text-gray-800 leading-relaxed bg-[#FAF9F6] p-3 rounded-xl border border-gray-100">{selectedCityB.economy}</p>
+                    </div>
+                    <div>
+                      <span className="block text-gray-500 text-[11px] mb-1 font-semibold">{language === 'ar' ? 'أبرز الأحياء والمعالم:' : 'Key Historic & Urban Districts:'}</span>
+                      <p className="font-medium text-gray-800 bg-[#FAF9F6] p-3 rounded-xl border border-gray-100">{selectedCityB.districts ? selectedCityB.districts.join(' · ') : 'Central & Historic'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <div>
-              <h4 className="font-serif text-lg font-bold text-white">
-                {language === 'ar' ? 'مقارنة شاملة لكافة الدول الـ ٢٢' : 'Comprehensive 22-Nation Analytical Matrix'}
-              </h4>
-              <p className="text-xs sm:text-sm text-white/80 mt-0.5">
-                {language === 'ar'
-                  ? 'قارن بين المؤشرات التاريخية والرموز الوطنية والمدن الكبرى لكافة أرجاء العالم العربي.'
-                  : 'Examine complete geopolitical indices, national symbols, and constitutional records in high-density matrix format.'}
-              </p>
+          )}
+
+          {/* Footer Navigation & Full Dossier Links */}
+          <div className="mt-10 pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-xs text-gray-500 font-sans">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>{language === 'ar' ? 'بيانات حكومية موثقة من الهيئات الإحصائية المركزية' : 'Verified sovereign intelligence from Central Statistical Authorities'}</span>
+            </div>
+
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <Link
+                href={mode === 'countries' ? `/countries/${selectedCountryA.slug}` : `/cities`}
+                className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-bold font-sans text-center transition-colors cursor-pointer"
+              >
+                {language === 'ar' ? `سجل ${selectedCountryA.arabicName} الكامل` : `View ${selectedCountryA.name} Dossier`}
+              </Link>
+              <Link
+                href={mode === 'countries' ? `/countries/${selectedCountryB.slug}` : `/cities`}
+                className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-forest hover:bg-[#102D26] text-white text-xs font-bold font-sans text-center transition-colors cursor-pointer"
+              >
+                {language === 'ar' ? `سجل ${selectedCountryB.arabicName} الكامل` : `View ${selectedCountryB.name} Dossier`}
+              </Link>
             </div>
           </div>
-          <Link
-            href="/compare"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-antiqueGold hover:bg-antiqueGold-dark text-forest font-bold text-xs uppercase tracking-wider transition-colors flex-shrink-0 shadow"
-          >
-            <span>{language === 'ar' ? 'دخول المصفوفة الكاملة' : 'Launch Full Matrix'}</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+
         </div>
+
       </div>
     </section>
   );

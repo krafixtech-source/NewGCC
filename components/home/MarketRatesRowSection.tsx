@@ -261,47 +261,53 @@ export const MarketRatesRowSection: React.FC = () => {
           <div className="bg-white border border-border p-6 sm:p-7 flex flex-col justify-between shadow-editorial">
             <div>
               {/* Converter Header */}
-              <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b border-border">
-                <div className="flex items-center gap-2">
-                  <Globe2 className="w-4 h-4 text-antiqueGold" />
-                  <h3 className="font-serif text-lg sm:text-xl font-bold text-ink">
-                    {language === 'ar' ? 'محول العملات العربية والعالمية' : 'Arab & Global Currency Converter'}
-                  </h3>
+              <div className="mb-4 pb-3 border-b border-border">
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <div className="flex items-center gap-2">
+                    <Globe2 className="w-4 h-4 text-antiqueGold" />
+                    <span className="text-[11px] font-sans text-gray-500 font-medium">
+                      1 {language === 'ar' ? convFromObj.nameAr : convFromObj.name} =
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono uppercase font-bold text-antiqueGold">
+                    22 Arab FX
+                  </span>
                 </div>
-                <span className="text-[10px] font-mono uppercase font-bold text-antiqueGold">
-                  22 Arab FX
-                </span>
+                <h4 className="text-xl sm:text-2xl font-bold font-sans text-gray-900 tracking-tight">
+                  {(singleRate < 0.01 ? singleRate.toFixed(4) : (singleRate < 1 ? singleRate.toFixed(3) : singleRate.toFixed(2)))} {language === 'ar' ? convToObj.nameAr : convToObj.name}
+                </h4>
               </div>
 
               {/* Converter Input Controls */}
               <div className="grid grid-cols-1 sm:grid-cols-11 gap-2.5 items-center mb-4">
                 {/* From Input & Currency */}
                 <div className="sm:col-span-5 space-y-1.5">
-                  <input
-                    type="number"
-                    min="1"
-                    value={convAmount}
-                    onChange={(e) => setConvAmount(Math.max(0, parseFloat(e.target.value) || 0))}
-                    className="w-full px-3 py-2 border border-border bg-[#FAF8F5] text-ink font-mono font-bold text-base focus:outline-none focus:border-forest"
-                  />
                   <select
                     value={convFromCode}
                     onChange={(e) => setConvFromCode(e.target.value)}
-                    className="w-full px-2.5 py-1.5 border border-border bg-white text-ink text-xs font-sans font-bold focus:outline-none focus:border-forest"
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white text-ink text-xs font-sans font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-xs cursor-pointer"
                   >
                     {ARAB_CURRENCIES.map(c => (
                       <option key={c.code} value={c.code}>
-                        {c.flag} {c.code} — {c.name}
+                        {c.code} {c.symbol} - {c.name}
                       </option>
                     ))}
                   </select>
+                  <input
+                    type="number"
+                    step="any"
+                    min="1"
+                    value={convAmount}
+                    onChange={(e) => setConvAmount(Math.max(0, parseFloat(e.target.value) || 0))}
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-[#FAF8F5] text-ink font-sans font-bold text-base focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500/20"
+                  />
                 </div>
 
                 {/* Swap Button */}
                 <div className="sm:col-span-1 flex justify-center py-1 sm:py-0">
                   <button
                     onClick={handleSwap}
-                    className="p-2 bg-[#FAF8F5] hover:bg-forest text-ink hover:text-white border border-border transition-colors cursor-pointer"
+                    className="flex items-center justify-center w-8 h-8 rounded-full bg-[#FAF8F5] hover:bg-gray-200 text-ink border border-gray-300 transition-all cursor-pointer transform active:scale-95"
                     title="Swap Currencies"
                     aria-label="Swap"
                   >
@@ -311,34 +317,34 @@ export const MarketRatesRowSection: React.FC = () => {
 
                 {/* To Output Display & Currency */}
                 <div className="sm:col-span-5 space-y-1.5">
-                  <div className="flex items-center justify-between px-3 py-2 border border-border bg-[#FAF8F5] text-ink">
-                    <span className="font-serif font-bold text-base text-forest truncate">
+                  <select
+                    value={convToCode}
+                    onChange={(e) => setConvToCode(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 bg-white text-ink text-xs font-sans font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-xs cursor-pointer"
+                  >
+                    {ARAB_CURRENCIES.map(c => (
+                      <option key={c.code} value={c.code}>
+                        {c.code} {c.symbol} - {c.name}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="flex items-center justify-between px-3 py-2.5 rounded-xl border border-gray-200 bg-[#FAF8F5] text-ink">
+                    <span className="font-sans font-bold text-base text-forest truncate">
                       {convertedTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                     <button
                       onClick={handleCopy}
-                      className="p-1 hover:bg-border text-ink-muted transition-colors cursor-pointer"
+                      className="p-1 hover:bg-gray-200 text-gray-500 rounded transition-colors cursor-pointer"
                       title="Copy result"
                     >
                       {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>
                   </div>
-                  <select
-                    value={convToCode}
-                    onChange={(e) => setConvToCode(e.target.value)}
-                    className="w-full px-2.5 py-1.5 border border-border bg-white text-ink text-xs font-sans font-bold focus:outline-none focus:border-forest"
-                  >
-                    {ARAB_CURRENCIES.map(c => (
-                      <option key={c.code} value={c.code}>
-                        {c.flag} {c.code} — {c.name}
-                      </option>
-                    ))}
-                  </select>
                 </div>
               </div>
 
               {/* Single Exchange Rate Indicator */}
-              <div className="text-[11px] font-mono text-ink-muted py-1.5 px-3 bg-[#FAF8F5] border border-border/70 flex items-center justify-between mb-4">
+              <div className="text-[11px] font-mono text-ink-muted py-1.5 px-3 rounded-lg bg-[#FAF8F5] border border-border/70 flex items-center justify-between mb-4">
                 <span>1 {convFromCode} = {singleRate.toFixed(4)} {convToCode}</span>
                 <span>1 {convToCode} = {(1 / singleRate).toFixed(4)} {convFromCode}</span>
               </div>

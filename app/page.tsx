@@ -12,7 +12,6 @@ import { EditorialDocumentaryVideoSection } from '@/components/home/EditorialDoc
 import { RoyalHousesSection } from '@/components/home/RoyalHousesSection';
 import { RoyaltyVideoBreakSection } from '@/components/home/RoyaltyVideoBreakSection';
 import { CurrentLeadershipSection } from '@/components/home/CurrentLeadershipSection';
-import { DynastiesTimelineSection } from '@/components/home/DynastiesTimelineSection';
 import { InsideTheArchiveSection } from '@/components/home/InsideTheArchiveSection';
 import { HistoryFilmSection } from '@/components/home/HistoryFilmSection';
 import { CivilizationsSection } from '@/components/home/CivilizationsSection';
@@ -60,10 +59,7 @@ export default function HomePage() {
       {/* 11 / Current Monarchs & Heads of State Catalogue */}
       <CurrentLeadershipSection />
 
-      {/* 12 / Dynasties Chronological Timeline */}
-      <DynastiesTimelineSection />
-
-      {/* 13 / Inside the Archive (Scholarly Research Table & Viewer) */}
+      {/* 12 / Inside the Archive (Scholarly Research Table & Viewer) */}
       <InsideTheArchiveSection />
 
       {/* 14 / History Full-Screen Film Break */}

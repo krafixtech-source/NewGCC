@@ -1,88 +1,112 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import type { Metadata } from 'next';
 import { Sparkles, ArrowRight, BookOpen, Compass, Building2 } from 'lucide-react';
 import { cultureTopicsData } from '@/lib/data/culture';
-
-export const metadata: Metadata = {
-  title: 'Cultures & Traditions of the Arab World — Arts & Heritage | GCC',
-  description: 'Explore the arts, architecture, calligraphy, hospitality, literature, poetry, and traditions of the Arab world.',
-};
+import { useLanguage } from '@/components/LanguageProvider';
 
 export default function CultureDirectoryPage() {
-  return (
-    <div className="pt-24 pb-24 bg-white text-charcoal min-h-screen selection:bg-gold selection:text-midnight">
-      <div className="mx-auto max-w-archival px-4 sm:px-6 lg:px-8">
-        
-        {/* Page Hero */}
-        <div className="py-12 border-b border-sand/60 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-sand/30 px-4 py-1 text-xs font-serif uppercase tracking-widest text-emerald-dark font-semibold mb-4">
-            <Sparkles className="h-3.5 w-3.5 text-gold-dark" />
-            <span>Patrimony & Living Traditions</span>
-          </div>
-          <h1 className="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-midnight mb-4">
-            The Cultures of the Arab World
-          </h1>
-          <p className="text-base sm:text-lg text-stone font-light leading-relaxed">
-            From the geometric mastery of Islamic architecture and the sacred art of Arabic calligraphy to desert hospitality, epic poetry, and maritime pearl diving.
-          </p>
+  const { language } = useLanguage();
 
-          <div className="pt-6">
-            <Link
-              href="/culture/architecture"
-              className="inline-flex items-center gap-2 rounded-full border border-gold bg-emerald px-6 py-2.5 text-xs font-bold text-ivory hover:bg-emerald-light transition-all shadow-md"
-            >
-              <Building2 className="h-4 w-4 text-gold" />
-              <span>Explore Dedicated Architecture Encyclopedia</span>
-            </Link>
-          </div>
+  return (
+    <div className="bg-canvas min-h-screen text-ink">
+      
+      {/* Cultural Hero Banner */}
+      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 border-b border-border overflow-hidden bg-slate-950 text-white">
+        <div className="absolute inset-0 z-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-45 scale-105 transform duration-1000"
+            style={{ backgroundImage: "url('/images/culture/calligraphy.jpg')" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/40" />
         </div>
 
-        {/* Culture Topics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-12">
+        <div className="relative z-10 mx-auto max-w-archival text-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-white/10 backdrop-blur-md border border-white/20 text-[11px] font-mono uppercase tracking-[0.25em] text-antiqueGold-light font-bold mb-4">
+            <Sparkles className="h-3.5 w-3.5 text-antiqueGold" />
+            <span>{language === 'ar' ? 'التراث الثقافي والفنون الحية' : 'Patrimony & Living Traditions'}</span>
+          </div>
+          <h1 className="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-white mb-4">
+            {language === 'ar' ? 'ثقافات وتقاليد العالم العربي' : 'The Cultures of the Arab World'}
+          </h1>
+          <p className="max-w-2xl mx-auto text-sm sm:text-base text-white/80 font-sans leading-relaxed mb-6">
+            {language === 'ar'
+              ? 'من عبقرية العمارة الإسلامية وفنون الخط العربي إلى كرم الضيافة بالقهوة العربية، وتراث الصيد بالصقور والغوص على اللؤلؤ.'
+              : 'From the geometric mastery of Islamic architecture and sacred Arabic calligraphy to desert hospitality, epic poetry, falconry, and maritime pearl diving.'}
+          </p>
+
+          <Link
+            href="/culture/architecture"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-antiqueGold text-forest text-xs font-mono uppercase tracking-wider font-bold hover:bg-antiqueGold-light transition-all shadow-lg cursor-pointer"
+          >
+            <Building2 className="h-4 w-4" />
+            <span>{language === 'ar' ? 'استعراض موسوعة العمارة العربية' : 'Explore Dedicated Architecture Encyclopedia'}</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* Cultural Topics Grid */}
+      <div className="mx-auto max-w-archival px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {cultureTopicsData.map(topic => (
-            <div
+            <Link
               key={topic.id}
-              className="group flex flex-col justify-between rounded-2xl border border-sand bg-white p-6 shadow-sm hover:shadow-xl hover:border-gold transition-all duration-300"
+              href={`/culture/${topic.slug}`}
+              className="group relative flex flex-col justify-between aspect-[3/4.2] sm:aspect-[3/4.4] w-full bg-slate-950 border border-border hover:border-antiqueGold transition-all duration-300 overflow-hidden shadow-sm hover:shadow-2xl"
             >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] uppercase tracking-widest font-bold text-gold-dark bg-ivory-muted px-3 py-1 rounded-full border border-sand">
-                    {topic.category}
+              {/* Background Culture Image with Zoom */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
+                style={{ backgroundImage: `url('${topic.imageUrl || "/images/craftsmanship.jpg"}')` }}
+              />
+
+              {/* Dark Vignette Gradient Overlays */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 via-50% to-black/35 group-hover:from-black transition-colors duration-300 pointer-events-none" />
+
+              {/* Top Category Badge */}
+              <div className="relative z-10 p-5 flex items-center justify-between">
+                <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-forest text-[10px] font-mono font-bold uppercase tracking-wider border border-white/20 shadow-sm">
+                  {topic.category}
+                </span>
+              </div>
+
+              {/* Bottom Information Overlaid on Image */}
+              <div className="relative z-10 p-6 flex flex-col justify-end">
+                <div className="mb-2">
+                  <span className="text-sm font-arabicHeading font-bold text-[#E5C98E] block mb-1">
+                    {topic.arabicName}
                   </span>
+                  <h3 className="font-serif font-bold text-2xl sm:text-3xl text-white group-hover:text-[#E5C98E] transition-colors leading-tight">
+                    {topic.title}
+                  </h3>
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-midnight group-hover:text-emerald transition-colors mb-1">
-                  {topic.title}
-                </h3>
-                <div className="font-arabicHeading text-sm text-stone-dark font-semibold mb-3">
-                  {topic.arabicName}
-                </div>
-
-                <p className="text-xs text-stone leading-relaxed line-clamp-3 mb-4">
+                <p className="text-xs text-white/75 font-sans leading-relaxed line-clamp-2 mb-4">
                   {topic.leadParagraph}
                 </p>
 
-                <div className="border-t border-sand/40 pt-3 space-y-1.5 text-xs text-stone-dark mb-4">
-                  <div>
-                    <strong className="text-midnight block text-[11px]">Craftsmanship:</strong>
-                    <span className="text-stone text-[11px] line-clamp-2">{topic.craftsmanship}</span>
-                  </div>
+                {/* Craftsmanship Highlights */}
+                <div className="text-xs text-white/85 font-sans mb-4 pt-3 border-t border-white/20">
+                  <span className="text-white/60 block text-[10px] uppercase font-mono mb-0.5">
+                    {language === 'ar' ? 'الحرفية والأصالة:' : 'Craftsmanship & Technique:'}
+                  </span>
+                  <span className="font-medium text-white/90 line-clamp-1">
+                    {topic.craftsmanship}
+                  </span>
+                </div>
+
+                {/* Action Link */}
+                <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs font-mono text-antiqueGold-light group-hover:text-white font-semibold transition-colors">
+                  <span>{language === 'ar' ? 'قراءة الدراسة الثقافية الكاملة' : 'Read Full Cultural Treatise'}</span>
+                  <span className="group-hover:translate-x-1.5 rtl:group-hover:-translate-x-1.5 transition-transform duration-300">→</span>
                 </div>
               </div>
-
-              <Link
-                href={`/culture/${topic.slug}`}
-                className="inline-flex items-center justify-between border-t border-sand/40 pt-3 text-xs font-semibold text-emerald-dark hover:text-gold-dark transition-colors"
-              >
-                <span>Read Full Cultural Treatise</span>
-                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+            </Link>
           ))}
         </div>
-
       </div>
+
     </div>
   );
 }

@@ -13,7 +13,7 @@ export const cultureTopicsData: CultureTopic[] = [
     history: 'Ancient Nabataean and Sabaean stone masonry evolved through the Umayyad and Abbasid eras into distinct regional schools: Najdi mudbrick fortified towers, Gulf coral stone and gypsum coastal dwellings, Levantine stone arcades, and Moorish horseshoe arches in the Maghreb and Al-Andalus.',
     craftsmanship: 'Carved gypsum plasterwork (Juss), hand-cut Zellij glazed tile mosaics, geometric timber joinery without nails, and intricately turned wooden Roshan screens.',
     traditions: 'Spatial organization centered on family privacy, separate reception halls for hospitality (Majlis), and central courtyard microclimates.',
-    imageUrl: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1600&q=85'
+    imageUrl: '/images/culture/mashrabiya.jpg'
   },
   {
     id: 'cul-callig',
@@ -26,7 +26,7 @@ export const cultureTopicsData: CultureTopic[] = [
     history: 'Originating from the early Nabataean-Aramaic script, calligraphy was refined in Kufa, Basra, Damascus, and Baghdad by master calligraphers Ibn Muqla, Ibn al-Bawwab, and Yaqut al-Musta\'simi, who established mathematical proportionality based on the point (Nuqta) of the reed pen (Qalam).',
     craftsmanship: 'The dried Qalam reed pen carved with a beveled tip, soot-based oak-gall ink (Midad), hand-sized burnished paper treated with egg white and starch (Ahar), and gold leaf illumination (Tadhhib).',
     traditions: 'An unbroken master-to-apprentice lineage sealed by the granting of the formal license (Ijaza) after years of rigorous training.',
-    imageUrl: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1600&q=85'
+    imageUrl: '/images/culture/calligraphy.jpg'
   },
   {
     id: 'cul-gahwa',
@@ -39,7 +39,7 @@ export const cultureTopicsData: CultureTopic[] = [
     history: 'First cultivated and brewed as a hot infusion in the highlands of Yemen (Sufi monasteries in Zabid and Mocha) in the 15th century, coffee culture spread across the Arabian Peninsula, Cairo, Damascus, and Mecca, giving birth to the world\'s first coffeehouses.',
     craftsmanship: 'Hand-hammered brass and copper Dallah pots featuring long curved spouts, carved wooden mortar and pestles (Mihbash), and roasting pans (Mahmas).',
     traditions: 'Etiquette dictates serving the guest with the right hand, pouring only one-third of the Finjan, and shaking the cup gently side-to-side when one has finished.',
-    imageUrl: 'https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=1600&q=85'
+    imageUrl: '/images/culture/gahwa.jpg'
   },
   {
     id: 'cul-pearl',
@@ -52,7 +52,7 @@ export const cultureTopicsData: CultureTopic[] = [
     history: 'Referenced in the Epic of Gilgamesh, the natural pearls of Bahrain, Qatar, UAE, and Kuwait were prized in Roman courts, Renaissance Europe, and the Mughal Empire for their unmatched luster (Dana).',
     craftsmanship: 'Hand-built wooden dhow vessels (Boum, Sambuk, Jalboot) crafted from teak without architectural blueprints, using curved ribs and coconut-fiber caulking.',
     traditions: 'Fijiri maritime chants led by the ship\'s singer (Nahham) provided rhythmic coordination and solace across the open sea.',
-    imageUrl: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1600&q=85'
+    imageUrl: '/images/culture/pearl-diving.jpg'
   },
   {
     id: 'cul-dress',
@@ -65,7 +65,20 @@ export const cultureTopicsData: CultureTopic[] = [
     history: 'Rooted in pre-Islamic Bedouin pastoralism and courtly Islamic dress, the Bisht remains the definitive symbol of royal protocol, state occasions, and wedding ceremonies across the Gulf and Arab world.',
     craftsmanship: 'The Al-Hasawi Bisht from Al-Ahsa oasis is the most prestigious hand-embroidered cloak in Arabia, requiring weeks of master needlework to apply golden Zari braids.',
     traditions: 'Worn open with right arm through the sleeve in official diplomatic ceremonies, state receptions, and national holidays.',
-    imageUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=1600&q=85'
+    imageUrl: '/images/culture/bisht.jpg'
+  },
+  {
+    id: 'cul-falconry',
+    title: 'Arabian Falconry & Desert Heritage',
+    arabicName: 'الصقارة والتراث الصحراوي',
+    slug: 'falconry',
+    category: 'Desert Heritage',
+    leadParagraph: 'Inscribed on the UNESCO Representative List of Intangible Cultural Heritage, falconry is an ancient Arabian tradition symbolizing patience, noble companionship, and mastery of the desert.',
+    overview: 'Practiced across the Arabian Peninsula for over four millennia, falconers train Saker and Peregrine falcons using traditional leather hoods (Burqa) and lures (Telwah), embodying deep respect for nature and wildlife.',
+    history: 'Ancient Arabian tribes domesticated falcons as essential hunting partners in the arid desert. Today, the GCC countries lead global falcon conservation and veterinary hospitals.',
+    craftsmanship: 'Handcrafted leather hoods (Burqa), braided leather jesses (Sabooq), and protective arm gauntlets (Mangalah).',
+    traditions: 'Seasonal autumn training expeditions into the Rub\' al Khali dunes and royal falconry festivals.',
+    imageUrl: '/images/culture/falconry.jpg'
   },
   {
     id: 'cul-poetry',
@@ -78,7 +91,7 @@ export const cultureTopicsData: CultureTopic[] = [
     history: 'Evolved into complex meter systems codified by Al-Khalil ibn Ahmad al-Farahidi in the 8th century, reaching imperial heights under Al-Mutanabbi and Abu Nuwas, and persisting today in contemporary Nabati verse.',
     craftsmanship: 'Mastery of 16 classical metric meters (Buhur al-Shi\'r) and oral recitation eloquence (Balaagha).',
     traditions: 'Recited around evening desert fires, in royal Majlis sessions, and celebrated in regional poetry competitions such as Million\'s Poet.',
-    imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1600&q=85'
+    imageUrl: '/images/about/archival-library.jpg'
   }
 ];
 

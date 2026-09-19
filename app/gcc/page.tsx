@@ -106,48 +106,74 @@ export default function GCCPage() {
         </section>
 
         {/* Section: 6 Member States Cards */}
-        <section className="space-y-6">
+        <section className="space-y-8">
           <div className="text-center max-w-2xl mx-auto">
-            <h2 className="font-serif text-3xl font-bold text-midnight">
+            <h2 className="font-serif text-3xl font-bold text-ink">
               The Six Sovereign Member States
             </h2>
-            <p className="text-xs sm:text-sm text-stone mt-1">
+            <p className="text-xs sm:text-sm text-ink-muted mt-1 font-sans">
               Click any member state to explore its dedicated digital encyclopedia.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {gccCountries.map(c => (
               <Link
                 key={c.id}
                 href={`/countries/${c.slug}`}
-                className="group rounded-2xl border border-sand bg-white p-6 shadow-sm hover:border-gold hover:shadow-xl transition-all"
+                className="group relative flex flex-col justify-between aspect-[3/4.2] sm:aspect-[3/4.4] w-full bg-slate-950 border border-border hover:border-antiqueGold transition-all duration-300 overflow-hidden shadow-sm hover:shadow-2xl"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-serif font-bold text-emerald-dark">
+                {/* Background Image with Zoom */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
+                  style={{ backgroundImage: `url('${c.heroImageUrl || "/images/alula.jpg"}')` }}
+                />
+
+                {/* Dark Vignette Gradient Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 via-50% to-black/35 group-hover:from-black transition-colors duration-300 pointer-events-none" />
+
+                {/* Top Badges */}
+                <div className="relative z-10 p-5 flex items-center justify-between">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-forest text-[10px] font-mono font-bold uppercase tracking-wider border border-white/20 shadow-sm">
                     Member Since 1981
                   </span>
-                  <span className="font-arabicHeading text-xs text-gold-dark font-semibold">
-                    {c.arabicName}
+
+                  <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 bg-antiqueGold text-forest shadow-sm">
+                    {c.isoCode}
                   </span>
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-midnight group-hover:text-emerald transition-colors">
-                  {c.name}
-                </h3>
-
-                <p className="text-xs text-stone-dark mt-2 line-clamp-2 leading-relaxed">
-                  {c.summary}
-                </p>
-
-                <div className="grid grid-cols-2 gap-2 border-t border-sand/40 pt-3 mt-4 text-xs">
-                  <div>
-                    <span className="text-stone block text-[10px]">Capital:</span>
-                    <span className="font-bold text-midnight">{c.capital}</span>
+                {/* Bottom Information Overlaid on Image */}
+                <div className="relative z-10 p-6 flex flex-col justify-end">
+                  <div className="mb-2">
+                    <span className="text-sm font-arabicHeading font-bold text-[#E5C98E] block mb-1">
+                      {c.arabicName}
+                    </span>
+                    <h3 className="font-serif font-bold text-3xl text-white group-hover:text-[#E5C98E] transition-colors leading-tight">
+                      {c.name}
+                    </h3>
                   </div>
-                  <div>
-                    <span className="text-stone block text-[10px]">Head of State:</span>
-                    <span className="font-semibold text-midnight truncate block">{c.headOfState}</span>
+
+                  <p className="text-xs text-white/75 font-sans leading-relaxed line-clamp-2 mb-4">
+                    {c.summary}
+                  </p>
+
+                  {/* Metadata details */}
+                  <div className="space-y-1 text-xs text-white/85 font-sans mb-4 pt-3 border-t border-white/20">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">Capital:</span>
+                      <span className="font-semibold text-white">{c.capital}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">Head of State:</span>
+                      <span className="font-semibold text-white truncate max-w-[160px]">{c.headOfState}</span>
+                    </div>
+                  </div>
+
+                  {/* Action Link */}
+                  <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs font-mono text-antiqueGold-light group-hover:text-white font-semibold transition-colors">
+                    <span>Explore Sovereign Profile</span>
+                    <span className="group-hover:translate-x-1.5 transition-transform duration-300">→</span>
                   </div>
                 </div>
               </Link>

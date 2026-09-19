@@ -70,13 +70,14 @@ export const RoyalHousesSection: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Authentic Architectural Thumbnail (Grows ~3% on hover) */}
+                {/* Authentic Architectural Thumbnail (Zoom & Expand on hover) */}
                 <div className="lg:col-span-3">
-                  <div className="relative aspect-[16/9] w-full overflow-hidden border border-border rounded-xl bg-canvas-paper shadow-sm">
+                  <div className="relative aspect-[16/9] w-full overflow-hidden border border-border rounded-xl bg-canvas-paper shadow-sm group-hover:shadow-xl group-hover:border-antiqueGold/60 transition-all duration-500 transform group-hover:scale-105">
                     <div 
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-115"
                       style={{ backgroundImage: `url('${rf.heroImageUrl || "/images/alula.jpg"}')` }}
                     />
+                    <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
                   </div>
                 </div>
 

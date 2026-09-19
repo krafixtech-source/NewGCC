@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { Share2, Search, ArrowRight, ChevronRight, Sparkles, Globe, Layers } from 'lucide-react';
 import { useLanguage } from '@/components/LanguageProvider';
 import { countriesData, royalFamiliesData, historicalErasData, landmarksData, cultureTopicsData } from '@/lib/data';
 
@@ -134,7 +135,6 @@ export default function KnowledgeGraphPage() {
         summary: `${era.startYear < 0 ? `${Math.abs(era.startYear)} BCE` : `${era.startYear} CE`} — ${era.endYear}`,
       });
 
-      // Connect to KSA or Egypt as legacy bridges
       rawLinks.push({
         source: nodeId,
         target: 'country-saudi-arabia',
@@ -186,77 +186,113 @@ export default function KnowledgeGraphPage() {
   }, [activeNode, links]);
 
   return (
-    <div className="min-h-screen bg-white py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-stone-200 gap-4">
-          <div>
-            <span className="text-xs uppercase tracking-[0.25em] text-antique-gold-700 font-semibold mb-2 block">
-              {language === 'ar' ? 'مخطط المعرفة التفاعلي' : 'Interactive Graph Ontology'}
-            </span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-emerald-950 font-bold">
+    <div className="bg-[#FAF9F5] text-charcoal min-h-screen selection:bg-antiqueGold selection:text-black">
+      
+      {/* Archival Hero Header */}
+      <section className="relative overflow-hidden bg-black text-white pt-24 pb-16 sm:pt-32 sm:pb-24 border-b border-[#E5C98E]/30">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/about/archival-library.jpg"
+            alt="Knowledge Graph"
+            className="w-full h-full object-cover object-center opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/40" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Breadcrumbs */}
+          <nav className="flex items-center gap-2 text-xs text-white/60 mb-6 font-serif">
+            <Link href="/" className="hover:text-[#E5C98E] transition-colors">Archive</Link>
+            <ChevronRight className="h-3 w-3 text-white/40" />
+            <span className="text-[#E5C98E] font-semibold">Knowledge Graph</span>
+          </nav>
+
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 border border-[#E5C98E]/40 bg-[#123C33]/60 backdrop-blur-md px-3.5 py-1 text-xs font-serif uppercase tracking-widest text-[#E5C98E] font-semibold mb-4">
+              <Share2 className="h-3.5 w-3.5 text-[#E5C98E]" />
+              <span>{language === 'ar' ? 'مخطط المعرفة التفاعلي' : 'Interactive Graph Ontology'}</span>
+            </div>
+
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4">
               {language === 'ar' ? 'شبكة العلاقات والمفاهيم التاريخية' : 'Arab World Knowledge Graph'}
             </h1>
-            <p className="text-stone-600 text-sm mt-1 max-w-2xl">
+
+            <p className="text-sm sm:text-base text-white/80 font-light leading-relaxed mb-6">
               {language === 'ar'
-                ? 'استكشف الترابط العضوي بين الدول، الأسر الحاكمة، المعالم الأثرية، والعصور التاريخية في شبكة بصرية تفاعلية.'
+                ? 'استكشف الترابط العضوي بين الدول، والأسر الحاكمة، والمعالم الأثرية، والعصور التاريخية في شبكة بصرية تفاعلية.'
                 : 'Explore interconnected sovereign nations, dynasties, historical eras, monumental landmarks, and cultural pillars.'}
             </p>
+
+            <div className="flex flex-wrap items-center gap-4 text-xs font-serif text-[#E5C98E]">
+              <span className="flex items-center gap-1.5 bg-black/60 border border-[#E5C98E]/30 px-3 py-1">
+                <Layers className="h-3.5 w-3.5" /> 5 Relational Entity Layers
+              </span>
+              <span className="flex items-center gap-1.5 bg-black/60 border border-[#E5C98E]/30 px-3 py-1">
+                <Globe className="h-3.5 w-3.5" /> Multi-Domain Arab Taxonomy
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Graph Canvas & Drawer */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        
+        {/* Controls and Search Bar */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-[#E5C98E]/30">
+          {/* Filter Bar */}
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { id: 'all', label: 'All Entities', labelAr: 'كافة الكيانات' },
+              { id: 'country', label: 'Nations (22)', labelAr: 'الدول' },
+              { id: 'royalty', label: 'Dynasties (8)', labelAr: 'الأسر الحاكمة' },
+              { id: 'era', label: 'Historical Eras', labelAr: 'العصور التاريخية' },
+              { id: 'landmark', label: 'Landmarks', labelAr: 'المعالم الأثرية' },
+              { id: 'culture', label: 'Culture & Heritage', labelAr: 'التراث والثقافة' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedType(tab.id)}
+                className={`px-4 py-2 text-xs font-serif font-semibold transition-all ${
+                  selectedType === tab.id
+                    ? 'bg-[#123C33] text-[#E5C98E] font-bold shadow-sm border border-[#E5C98E]/40'
+                    : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-100'
+                }`}
+              >
+                {language === 'ar' ? tab.labelAr : tab.label}
+              </button>
+            ))}
           </div>
 
           {/* Search within graph */}
-          <div className="flex items-center gap-3">
+          <div className="relative">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={language === 'ar' ? 'بحث في العقد...' : 'Filter nodes...'}
-              className="px-4 py-2 bg-white border border-stone-300 rounded-full text-xs text-emerald-950 focus:outline-none focus:border-antique-gold-500 shadow-sm"
+              className="px-4 py-2 bg-white border border-stone-300 text-xs font-serif text-[#123C33] focus:outline-none focus:border-[#C6A15B] shadow-sm w-full md:w-64"
             />
           </div>
-        </div>
-
-        {/* Filter Bar */}
-        <div className="flex flex-wrap items-center gap-2 mb-6">
-          {[
-            { id: 'all', label: 'All Entities', labelAr: 'كافة الكيانات', color: 'bg-stone-800' },
-            { id: 'country', label: 'Nations (22)', labelAr: 'الدول', color: 'bg-emerald-900' },
-            { id: 'royalty', label: 'Dynasties (8)', labelAr: 'الأسر الحاكمة', color: 'bg-antique-gold-600' },
-            { id: 'era', label: 'Historical Eras', labelAr: 'العصور التاريخية', color: 'bg-emerald-700' },
-            { id: 'landmark', label: 'Landmarks', labelAr: 'المعالم الأثرية', color: 'bg-amber-800' },
-            { id: 'culture', label: 'Culture & Heritage', labelAr: 'التراث والثقافة', color: 'bg-stone-700' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedType(tab.id)}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                selectedType === tab.id
-                  ? 'bg-emerald-950 text-antique-gold-300 shadow-sm'
-                  : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-100'
-              }`}
-            >
-              {language === 'ar' ? tab.labelAr : tab.label}
-            </button>
-          ))}
         </div>
 
         {/* Interactive Canvas & Detail Side-Drawer */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
           {/* Main Visualizer SVG Card */}
-          <div className="lg:col-span-3 bg-white rounded-2xl border border-stone-200 p-3 sm:p-5 shadow-sm overflow-hidden relative">
-            <div className="absolute top-4 left-4 z-10 bg-sand-50/90 backdrop-blur-sm border border-stone-200 px-3.5 py-1.5 rounded-full text-[11px] text-stone-600 shadow-sm">
+          <div className="lg:col-span-3 bg-white border border-[#E5C98E]/30 p-3 sm:p-5 shadow-sm overflow-hidden relative">
+            <div className="absolute top-4 left-4 z-10 bg-black/80 backdrop-blur-sm border border-[#E5C98E]/40 px-3.5 py-1.5 text-[11px] font-serif text-[#E5C98E] shadow-sm">
               💡 {language === 'ar' ? 'انقر على أي عقدة لاستعراض تفاصيلها وعلاقاتها' : 'Click any node to explore its relational links'}
             </div>
 
             <div className="w-full overflow-auto">
               <svg 
                 viewBox="0 0 900 700" 
-                className="w-full h-auto min-w-[700px] select-none bg-stone-900/5 rounded-lg"
+                className="w-full h-auto min-w-[700px] select-none bg-[#FAF9F5]"
               >
                 {/* Background Grid Pattern */}
                 <defs>
                   <pattern id="graph-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="1" />
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(198,161,91,0.08)" strokeWidth="1" />
                   </pattern>
                 </defs>
                 <rect width="900" height="700" fill="url(#graph-grid)" />
@@ -322,7 +358,7 @@ export default function KnowledgeGraphPage() {
                         <text
                           y={node.radius + 14}
                           textAnchor="middle"
-                          className="font-serif font-bold text-[11px] fill-emerald-950 pointer-events-none drop-shadow-sm"
+                          className="font-serif font-bold text-[11px] fill-[#123C33] pointer-events-none drop-shadow-sm"
                         >
                           {node.label}
                         </text>
@@ -342,35 +378,35 @@ export default function KnowledgeGraphPage() {
           </div>
 
           {/* Node Detail Drawer Card */}
-          <div className="lg:col-span-1 bg-white rounded-2xl border border-stone-200 p-6 shadow-sm">
+          <div className="lg:col-span-1 bg-white border border-[#E5C98E]/30 p-6 shadow-sm">
             {activeNode ? (
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-antique-gold-100 text-antique-gold-900">
+                  <span className="text-[10px] font-serif uppercase font-bold tracking-wider px-3 py-1 bg-[#123C33] text-[#E5C98E]">
                     {activeNode.category}
                   </span>
                   <button
                     onClick={() => setActiveNode(null)}
-                    className="flex h-6 w-6 items-center justify-center rounded-full bg-stone-100 text-stone-500 hover:text-stone-800 text-xs"
+                    className="flex h-6 w-6 items-center justify-center bg-stone-100 text-stone-500 hover:text-black text-xs font-bold"
                   >
                     ✕
                   </button>
                 </div>
 
-                <h3 className="font-serif text-xl font-bold text-emerald-950 mb-1">
+                <h3 className="font-serif text-xl font-bold text-[#123C33] mb-1">
                   {activeNode.label}
                 </h3>
-                <div className="font-arabic text-sm text-antique-gold-700 mb-4">
+                <div className="font-arabic text-sm text-[#C6A15B] font-semibold mb-4">
                   {activeNode.arabicLabel}
                 </div>
 
-                <p className="text-xs text-stone-600 leading-relaxed mb-6">
+                <p className="text-xs text-stone-600 font-light leading-relaxed mb-6">
                   {activeNode.summary}
                 </p>
 
                 {/* Connected Edges */}
-                <div className="mb-6 border-t border-stone-100 pt-4">
-                  <h4 className="text-xs uppercase tracking-wider font-bold text-stone-700 mb-2">
+                <div className="mb-6 border-t border-stone-200 pt-4">
+                  <h4 className="text-xs uppercase font-serif tracking-wider font-bold text-[#123C33] mb-2">
                     {language === 'ar' ? 'الروابط الشبكية المتصلة' : 'Connected Relationships'}
                   </h4>
                   {activeNodeLinks.length > 0 ? (
@@ -381,14 +417,14 @@ export default function KnowledgeGraphPage() {
                         if (!otherNode) return null;
 
                         return (
-                          <li key={idx} className="flex items-center justify-between p-3 rounded-xl bg-sand-50 border border-stone-100">
+                          <li key={idx} className="flex items-center justify-between p-2.5 bg-[#FAF9F5] border border-stone-200">
                             <div>
-                              <div className="font-medium text-emerald-950">{otherNode.label}</div>
-                              <div className="text-[10px] text-stone-400">{link.relation}</div>
+                              <div className="font-serif font-bold text-[#123C33]">{otherNode.label}</div>
+                              <div className="text-[10px] text-stone-500">{link.relation}</div>
                             </div>
                             <button
                               onClick={() => setActiveNode(otherNode)}
-                              className="text-[10px] text-antique-gold-700 font-bold hover:underline"
+                              className="text-[10px] text-[#C6A15B] font-serif font-bold hover:underline"
                             >
                               Inspect →
                             </button>
@@ -397,13 +433,13 @@ export default function KnowledgeGraphPage() {
                       })}
                     </ul>
                   ) : (
-                    <p className="text-xs text-stone-400 italic">No direct links in current projection</p>
+                    <p className="text-xs text-stone-400 italic font-serif">No direct links in current projection</p>
                   )}
                 </div>
 
                 <Link
                   href={activeNode.url}
-                  className="block text-center w-full py-2.5 bg-emerald-900 text-antique-gold-300 font-semibold rounded-full text-xs hover:bg-emerald-800 transition-colors shadow-sm"
+                  className="block text-center w-full py-2.5 bg-[#123C33] text-[#E5C98E] font-serif font-bold text-xs hover:bg-[#1a4f44] transition-colors shadow-sm"
                 >
                   {language === 'ar' ? 'عرض السجل التوثيقي الكامل' : 'Open Full Archival Entry →'}
                 </Link>
@@ -411,10 +447,10 @@ export default function KnowledgeGraphPage() {
             ) : (
               <div className="text-center py-12 text-stone-400">
                 <div className="text-3xl mb-3">🌐</div>
-                <h4 className="font-serif font-bold text-emerald-950 mb-1">
+                <h4 className="font-serif font-bold text-[#123C33] mb-1">
                   {language === 'ar' ? 'حدد عقدة في المخطط' : 'Select a Knowledge Node'}
                 </h4>
-                <p className="text-xs text-stone-500 leading-relaxed">
+                <p className="text-xs text-stone-500 leading-relaxed font-light">
                   {language === 'ar'
                     ? 'انقر على أي دولة، أسرة حاكمة، معلَم، أو عصر تاريخي لعرض تفاصيله الدقيقة وشبكة علاقاته.'
                     : 'Click any node to explore historical ties, sovereignty relations, and foundational documentation.'}
@@ -423,7 +459,9 @@ export default function KnowledgeGraphPage() {
             )}
           </div>
         </div>
-      </div>
+
+      </section>
+
     </div>
   );
 }

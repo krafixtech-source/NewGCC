@@ -16,7 +16,7 @@ export const historicalErasData: HistoricalEra[] = [
     science: 'Engineered sophisticated hidden cisterns, water piping, flood-control dams, and terraced irrigation in arid desert climates.',
     architecture: 'Rock-cut facade tombs with classical pediments, crowstep attics, and carved protective deities in sandstone massifs.',
     legacy: 'Petra and Hegra stand as UNESCO World Heritage sites celebrating ancient Arab engineering.',
-    heroImageUrl: 'https://images.unsplash.com/photo-1579606032834-a74bdc18151f?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/alula.jpg',
     keyRulers: ['King Aretas III ("Philhellene")', 'King Aretas IV Philopatris', 'King Malichus II'],
     keyEvents: [
       { year: '312 BCE', title: 'Antigonus Expedition', description: 'Nabataeans successfully defend Petra against the Macedonian general Antigonus.' },
@@ -38,7 +38,7 @@ export const historicalErasData: HistoricalEra[] = [
     science: 'Pioneered early astronomical observatories and standardized administrative record keeping.',
     architecture: 'The Dome of the Rock in Jerusalem, the Umayyad Great Mosque of Damascus, and desert castles (Qasr Amra, Qasr Al-Kharanah).',
     legacy: 'Established enduring foundations of Islamic art, governance, and urban design; later continued in Spain as the Emirate and Caliphate of Córdoba.',
-    heroImageUrl: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/history/andalus.jpg',
     keyRulers: ['Mu\'awiya I', 'Abd al-Malik ibn Marwan', 'Al-Walid I', 'Umar ibn Abd al-Aziz'],
     keyEvents: [
       { year: '661 CE', title: 'Foundation in Damascus', description: 'Mu\'awiya I establishes Damascus as the imperial capital.' },
@@ -60,7 +60,7 @@ export const historicalErasData: HistoricalEra[] = [
     science: 'Discovery of algebra (Al-Khwarizmi), optics (Ibn al-Haytham), surgical medicine (Al-Razi, Ibn Sina), and astronomical astrolabes.',
     architecture: 'The Round City of Baghdad, Great Mosque of Samarra with its iconic spiral minaret (Malwiya), and palatial complexes.',
     legacy: 'Preserved and revolutionized human sciences, laying the intellectual foundations for the European Renaissance.',
-    heroImageUrl: 'https://images.unsplash.com/photo-1580835845971-a393b73bf370?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/history/islamic-golden-age.jpg',
     keyRulers: ['Abu Ja\'far Al-Mansur', 'Harun al-Rashid', 'Al-Ma\'mun', 'Al-Mu\'tasim'],
     keyEvents: [
       { year: '762 CE', title: 'Founding of Baghdad', description: 'Caliph Al-Mansur founds the Round City of Peace (Madinat al-Salam) on the Tigris.' },
@@ -82,7 +82,7 @@ export const historicalErasData: HistoricalEra[] = [
     science: 'Botany, advanced agricultural water wheels (Norias), surgical medicine (Al-Zahrawi / Abulcasis), and celestial astronomy.',
     architecture: 'The Great Mosque of Córdoba (Mezquita), the Alhambra in Granada, the Giralda in Seville, and Madinat al-Zahra.',
     legacy: 'Transmitted ancient sciences and new Arab innovations to Western Europe, inspiring European universities.',
-    heroImageUrl: 'https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/history/andalus.jpg',
     keyRulers: ['Abd al-Rahman I (The Falcon of Quraysh)', 'Abd al-Rahman III (Caliph of Córdoba)', 'Muhammad I of Granada'],
     keyEvents: [
       { year: '756 CE', title: 'Emirate of Córdoba Established', description: 'Abd al-Rahman I establishes autonomous Umayyad rule in Iberia.' },
@@ -104,7 +104,7 @@ export const historicalErasData: HistoricalEra[] = [
     science: 'Clean hydrogen, desalination innovation, renewable mega-grids (Masdar, Mohammed bin Rashid Solar Park), aerospace, and artificial intelligence.',
     architecture: 'Burj Khalifa, Kingdom Centre, King Abdullah Financial District, Sheikh Zayed Grand Mosque, Lusail Stadium, and futuristic bioclimatic megastructures.',
     legacy: 'Redefining 21st-century diplomacy, sustainable infrastructure, and cultural custodianship on the world stage.',
-    heroImageUrl: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=85',
+    heroImageUrl: '/images/riyadh.jpg',
     keyRulers: ['King Salman & Crown Prince Mohammed bin Salman', 'Sheikh Mohamed bin Zayed', 'Sheikh Tamim bin Hamad', 'Sultan Haitham bin Tariq'],
     keyEvents: [
       { year: '1981', title: 'Establishment of the GCC', description: 'The six Gulf states sign the GCC Charter at the Abu Dhabi summit on 25 May 1981.' },

@@ -52,6 +52,7 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section 
+      dir="ltr"
       className="relative w-full min-h-[100dvh] h-[100dvh] pt-[65px] bg-white flex flex-col justify-between overflow-hidden border-b border-[#E5E7EB]"
       aria-label="Monarchs & Sovereign Rulers Full Screen Hero"
     >
@@ -70,7 +71,7 @@ export const HeroSection: React.FC = () => {
           
           {/* Atmospheric Multi-Directional Gradient Fades */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
-          <div className="hidden lg:block absolute inset-y-0 right-0 w-44 bg-gradient-to-l from-white via-white/50 to-transparent pointer-events-none rtl:right-auto rtl:left-0 rtl:bg-gradient-to-r" />
+          <div className="hidden lg:block absolute inset-y-0 right-0 w-44 bg-gradient-to-l from-white via-white/50 to-transparent pointer-events-none" />
           <div className="lg:hidden absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white via-white/60 to-transparent pointer-events-none" />
 
           {/* Top Sovereign Badge */}
@@ -95,7 +96,10 @@ export const HeroSection: React.FC = () => {
         </div>
 
         {/* RIGHT SIDE: Full-Bleed Archival Dossier & Information */}
-        <div className="w-full flex-1 flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 2xl:p-20 bg-white relative overflow-y-auto lg:overflow-visible">
+        <div 
+          dir={isRTL ? 'rtl' : 'ltr'}
+          className="w-full flex-1 flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 2xl:p-20 bg-white relative overflow-y-auto lg:overflow-visible"
+        >
           
           <div className="space-y-5 lg:space-y-6 max-w-3xl">
             

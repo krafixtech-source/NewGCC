@@ -156,35 +156,11 @@ body {
   background: rgba(247, 244, 237, 0.12);
 }
 
-/* Universal Sharp Architectural Edge Presets */
-.card-soft {
-  border-radius: 0px !important;
-}
-
-.frame-soft {
-  border-radius: 0px !important;
-}
-
-.btn-soft {
-  border-radius: 0px !important;
-}
-
-.pill-soft {
-  border-radius: 0px !important;
-}
-
-/* Universal Sharp Edges Enforcement for Images, Sections, Cards & UI Elements */
+/* Architectural Defaults (Allowing explicit rounded classes where intended) */
 img,
 video,
-iframe,
-section,
-article,
-dialog,
-button,
-input,
-select,
-textarea {
-  border-radius: 0px !important;
+iframe {
+  border-radius: 0px;
 }
 
 
