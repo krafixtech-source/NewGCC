@@ -25,8 +25,7 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
       aria-label={isEn ? 'Switch to Arabic language' : 'Switch to English language'}
       title={isEn ? 'Switch to Arabic (AR)' : 'Switch to English (EN)'}
       dir="ltr"
-      style={{ borderRadius: '9999px' }}
-      className={`relative inline-flex items-center h-[34px] sm:h-[36px] w-[96px] sm:w-[104px] bg-white border-[1.5px] border-[#253858] !rounded-full overflow-hidden cursor-pointer select-none shrink-0 shadow-xs transition-opacity hover:opacity-95 ${className}`}
+      className={`relative inline-flex items-center h-[34px] sm:h-[36px] w-[96px] sm:w-[104px] bg-white border-[1.5px] border-[#253858] overflow-hidden cursor-pointer select-none shrink-0 shadow-xs transition-opacity hover:opacity-95 ${className}`}
     >
       {/* Sliding Active Pill Background */}
       <motion.div
@@ -36,8 +35,7 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
           left: isEn ? '0%' : '50%',
         }}
         transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-        style={{ borderRadius: '9999px' }}
-        className="absolute top-0 bottom-0 w-1/2 !rounded-full bg-[#253858]"
+        className="absolute top-0 bottom-0 w-1/2 bg-[#253858]"
       />
 
       {/* English Label (Left Half) */}

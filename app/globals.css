@@ -156,11 +156,31 @@ body {
   background: rgba(247, 244, 237, 0.12);
 }
 
-/* Architectural Defaults (Allowing explicit rounded classes where intended) */
+/* Universal Sharp Architectural Edges (No soft corners website-wide) */
+*,
+*::before,
+*::after,
+div,
+section,
+article,
+header,
+footer,
+nav,
+aside,
+main,
+figure,
 img,
 video,
-iframe {
-  border-radius: 0px;
+iframe,
+canvas,
+svg,
+button,
+input,
+select,
+textarea,
+span,
+a {
+  border-radius: 0px !important;
 }
 
 

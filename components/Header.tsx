@@ -128,8 +128,7 @@ export const Header: React.FC = () => {
               <div className="relative" ref={moreMenuRef}>
                 <button
                   onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-                  style={{ borderRadius: '9999px' }}
-                  className={`flex items-center justify-center h-[34px] sm:h-[36px] w-[34px] sm:w-[36px] !rounded-full border-[1.5px] bg-white transition-all duration-200 cursor-pointer shrink-0 ${
+                  className={`flex items-center justify-center h-[34px] sm:h-[36px] w-[34px] sm:w-[36px] border-[1.5px] bg-white transition-all duration-200 cursor-pointer shrink-0 ${
                     isMoreMenuOpen
                       ? 'border-[#253858] text-[#253858] shadow-sm'
                       : 'border-[#D5CDBC] text-[#181816] hover:border-[#253858] hover:text-[#253858] hover:bg-[#FAF8F5] shadow-xs'
