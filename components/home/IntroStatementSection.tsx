@@ -40,9 +40,17 @@ export const IntroStatementSection: React.FC = () => {
           {/* Huge Typography */}
           <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-ink tracking-tight leading-[1.15]">
             {language === 'ar' ? (
-              <>٢٢ دَوْلَة. آلاف السِّنِين.<br />مَلايِينُ الحِكَايَات.</>
+              <>
+                ٢٢ دَوْلَة.<br />
+                آلاف السِّنِين.<br />
+                مَلايِينُ الحِكَايَات.
+              </>
             ) : (
-              <>22 NATIONS. THOUSANDS OF YEARS.<br />MILLIONS OF STORIES.</>
+              <>
+                22 NATIONS.<br />
+                THOUSANDS OF YEARS.<br />
+                MILLIONS OF STORIES.
+              </>
             )}
           </h2>
 

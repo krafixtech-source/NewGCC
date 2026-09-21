@@ -149,6 +149,25 @@ export default async function CountryDetailPage({ params }: PageProps) {
             </div>
           </div>
 
+          {/* Mobile & iPad Horizontal Quick-Nav Pill Bar */}
+          <div className="lg:hidden col-span-1 border-b border-sand/60 pb-3 mb-2 sticky top-16 z-20 bg-white/95 backdrop-blur-md pt-2">
+            <div className="text-[10px] font-bold text-stone-dark uppercase tracking-wider mb-2 font-serif px-1 flex items-center gap-1.5">
+              <FileText className="h-3 w-3 text-gold-dark" />
+              <span>Jump to Section:</span>
+            </div>
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 px-1">
+              {sectionsNav.map(item => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className="px-3 py-1.5 rounded-full bg-sand/30 hover:bg-emerald/10 hover:text-emerald text-xs font-medium text-stone-dark whitespace-nowrap transition-colors shrink-0 border border-sand/60 shadow-xs"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
           {/* Center Column: Long-form Encyclopedia Content */}
           <div className="lg:col-span-6 space-y-14">
             

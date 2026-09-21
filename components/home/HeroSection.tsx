@@ -74,21 +74,22 @@ export const HeroSection: React.FC = () => {
           <div className="hidden lg:block absolute inset-y-0 right-0 w-44 bg-gradient-to-l from-white via-white/50 to-transparent pointer-events-none" />
           <div className="lg:hidden absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white via-white/60 to-transparent pointer-events-none" />
 
-          {/* Top Sovereign Badge */}
-          <div className="absolute top-6 left-6 z-10 flex items-center gap-2 bg-black/70 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/25 text-xs font-mono text-[#E5C98E] shadow-xl">
-            <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span className="font-semibold">
-              {currentKing.isCurrent 
-                ? (language === 'ar' ? 'حاكم معاصر' : 'Reigning Sovereign') 
-                : (language === 'ar' ? 'شخصية تاريخية' : 'Historic Monarch')}
-            </span>
-          </div>
-
-          {/* Bottom Nation Label & Reign Details */}
-          <div className="absolute bottom-8 left-8 right-8 z-10 text-white">
-            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#E5C98E] font-bold block mb-1 drop-shadow-md">
+          {/* Bottom Overlay: Nation Label, Sovereign Status Badge, & Monarch Name */}
+          <div className="absolute bottom-8 left-8 right-8 z-10 text-white flex flex-col items-start gap-2">
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#E5C98E] font-bold block drop-shadow-md">
               {currentKing.country}
             </span>
+
+            {/* Sovereign Badge (Positioned between Country Name and Monarch Name) */}
+            <div className="inline-flex items-center gap-2 bg-black/75 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/25 text-xs font-mono text-[#E5C98E] shadow-xl my-0.5">
+              <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span className="font-semibold">
+                {currentKing.isCurrent 
+                  ? (language === 'ar' ? 'حاكم معاصر' : 'Reigning Sovereign') 
+                  : (language === 'ar' ? 'شخصية تاريخية' : 'Historic Monarch')}
+              </span>
+            </div>
+
             <span className="font-serif text-2xl sm:text-3xl font-bold text-white leading-tight block drop-shadow-md">
               {currentKing.name}
             </span>

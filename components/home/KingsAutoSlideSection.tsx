@@ -97,17 +97,16 @@ export const KingsAutoSlideSection: React.FC = () => {
               {/* Subtle Vignette Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
 
-              {/* Reign Status Badge */}
-              <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20 text-[9px] font-mono text-[#E5C98E]">
-                <Crown className="w-2.5 h-2.5 text-[#D4AF37]" />
-                <span>{currentKing.isCurrent ? (language === 'ar' ? 'حاكم معاصر' : 'Reigning') : (language === 'ar' ? 'تاريخي' : 'Historic')}</span>
-              </div>
-
-              {/* Bottom Nation Label */}
-              <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10 text-white">
+              {/* Bottom Nation Label & Reign Status Badge */}
+              <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10 text-white flex flex-col items-start gap-1">
                 <span className="text-[9px] font-mono uppercase tracking-wider text-[#E5C98E] font-bold block">
                   {currentKing.country}
                 </span>
+
+                <div className="inline-flex items-center gap-1 bg-black/70 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20 text-[9px] font-mono text-[#E5C98E]">
+                  <Crown className="w-2.5 h-2.5 text-[#D4AF37]" />
+                  <span>{currentKing.isCurrent ? (language === 'ar' ? 'حاكم معاصر' : 'Reigning Sovereign') : (language === 'ar' ? 'شخصية تاريخية' : 'Historic Monarch')}</span>
+                </div>
               </div>
             </div>
           </div>

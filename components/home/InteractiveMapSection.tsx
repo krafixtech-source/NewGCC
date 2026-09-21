@@ -102,7 +102,7 @@ export const InteractiveMapSection: React.FC = () => {
     <section className="bg-canvas-white py-20 px-4 sm:px-6 lg:px-8 border-b border-border">
       <div className="mx-auto max-w-archival">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-border gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>
             <span className="text-xs font-mono uppercase tracking-widest text-antiqueGold font-bold mb-2 block">
               {language === 'ar' ? 'الأطلس الجغرافي والديموغرافي' : 'Geopolitical & Regional Atlas'}
@@ -111,15 +111,10 @@ export const InteractiveMapSection: React.FC = () => {
               {language === 'ar' ? 'خريطة العالم العربي والأقاليم' : 'The Arab World: Regional Atlas'}
             </h2>
           </div>
-          <p className="text-xs sm:text-sm text-ink-muted max-w-md">
-            {language === 'ar'
-              ? 'وثيقة جغرافية وديموغرافية تغطي ٢٢ دولة عربية مقسمة حسب الأقاليم التاريخية والجغرافية.'
-              : 'Demographic and geopolitical records spanning 22 sovereign nations across primary historical regions.'}
-          </p>
         </div>
 
         {/* Region Filter Bar */}
-        <div className="flex flex-wrap items-center gap-2.5 mb-8 pb-4 border-b border-border/60">
+        <div className="flex flex-wrap items-center gap-2.5 mb-8 pb-2">
           {regions.map((reg) => (
             <button
               key={reg.id}
