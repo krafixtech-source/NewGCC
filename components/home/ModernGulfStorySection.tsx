@@ -65,14 +65,14 @@ export const ModernGulfStorySection: React.FC = () => {
   const active = gulfEras[activeEraIndex];
 
   return (
-    <section className="bg-canvas-white py-24 px-4 sm:px-6 lg:px-8 border-b border-border">
+    <section className="bg-antiqueGold py-24 px-4 sm:px-6 lg:px-8 border-b border-forest/20">
       <div className="mx-auto max-w-archival">
         {/* Section Header */}
-        <div className="mb-12 pb-6 border-b border-border">
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-ink tracking-tight">
+        <div className="mb-12 pb-6 border-b border-forest/20">
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-forest tracking-tight">
             {language === 'ar' ? 'صناعة الخليج الحديث: أربعة عصور' : 'The Making of the Modern Gulf'}
           </h2>
-          <p className="text-xs sm:text-sm text-ink-muted mt-2 max-w-2xl">
+          <p className="text-xs sm:text-sm text-forest/80 mt-2 max-w-2xl font-medium">
             A chronological retrospective tracing the economic and geopolitical evolution of the Arabian Gulf from maritime pearl banking to global architectural leadership.
           </p>
         </div>
@@ -81,14 +81,14 @@ export const ModernGulfStorySection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-14 items-center">
           {/* Left 55%: Visual Canvas */}
           <div className="lg:col-span-7">
-            <div className="relative aspect-[16/10] w-full overflow-hidden bg-canvas-paper border border-border rounded-2xl shadow-editorial">
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-forest-dark border border-forest/30 rounded-2xl shadow-2xl">
               <div
                 className="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out"
                 style={{ backgroundImage: `url('${active.imageUrl}')` }}
               />
-              <div className="absolute inset-0 bg-canvas/10 pointer-events-none" />
+              <div className="absolute inset-0 bg-black/10 pointer-events-none" />
 
-              <div className="absolute bottom-4 left-4 right-4 bg-canvas-white/95 backdrop-blur-sm border border-border p-3 text-xs font-mono text-ink flex items-center justify-between rounded-xl shadow-sm">
+              <div className="absolute bottom-4 left-4 right-4 bg-forest-dark/95 backdrop-blur-sm border border-white/20 p-3 text-xs font-mono text-white flex items-center justify-between rounded-xl shadow-lg">
                 <span>Phase {active.number} · {active.period}</span>
                 <span className="text-antiqueGold text-[11px] font-sans">{active.caption}</span>
               </div>
@@ -106,26 +106,26 @@ export const ModernGulfStorySection: React.FC = () => {
                   onClick={() => setActiveEraIndex(index)}
                   className={`cursor-pointer p-5 border rounded-xl transition-all text-left rtl:text-right shadow-sm ${
                     isCurrent
-                      ? 'bg-canvas-paper border-antiqueGold shadow-md ring-1 ring-antiqueGold/40'
-                      : 'bg-canvas-white border-border hover:bg-canvas-paper/50'
+                      ? 'bg-forest text-white border-forest shadow-lg ring-2 ring-forest/30'
+                      : 'bg-white/90 text-forest border-forest/20 hover:bg-white'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono text-xs font-bold text-antiqueGold">
+                    <span className={`font-mono text-xs font-bold ${isCurrent ? 'text-antiqueGold' : 'text-forest'}`}>
                       {era.number} / {era.period}
                     </span>
                     {isCurrent && (
-                      <span className="text-[10px] font-mono px-2.5 py-0.5 bg-forest text-canvas-white font-bold rounded-full">
+                      <span className="text-[10px] font-mono px-2.5 py-0.5 bg-antiqueGold text-forest font-extrabold rounded-full">
                         ACTIVE
                       </span>
                     )}
                   </div>
 
-                  <h3 className="font-serif font-bold text-lg text-ink mb-1">
+                  <h3 className={`font-serif font-bold text-lg mb-1 ${isCurrent ? 'text-white' : 'text-forest'}`}>
                     {language === 'ar' ? era.titleAr : era.title}
                   </h3>
 
-                  <p className="text-xs text-ink-muted leading-relaxed font-sans line-clamp-2">
+                  <p className={`text-xs leading-relaxed font-sans line-clamp-2 ${isCurrent ? 'text-white/80' : 'text-forest/80'}`}>
                     {era.description}
                   </p>
                 </div>

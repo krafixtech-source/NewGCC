@@ -35,20 +35,20 @@ export const CountryDiscoverySection: React.FC = () => {
 
   return (
     <section 
-      className="bg-canvas py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-border overflow-hidden relative"
+      className="bg-antiqueGold py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-forest/20 overflow-hidden relative"
       aria-label="Sovereign States of the Arab World Carousel"
     >
       <div className="mx-auto max-w-archival">
         
         {/* Section Header with Title only */}
-        <div className="mb-10 pb-6 border-b border-border">
+        <div className="mb-10 pb-6 border-b border-forest/20">
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-2 h-2 rounded-full bg-antiqueGold shadow-[0_0_6px_rgba(184,154,97,0.6)]" />
-            <span className="font-mono text-xs uppercase tracking-[0.25em] text-antiqueGold font-bold">
+            <span className="w-2 h-2 rounded-full bg-forest shadow-[0_0_6px_rgba(21,59,50,0.6)]" />
+            <span className="font-mono text-xs uppercase tracking-[0.25em] text-forest font-extrabold">
               {language === 'ar' ? 'الموسوعة الجيوسياسية' : 'Sovereign Roster'}
             </span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-ink font-bold tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-forest font-bold tracking-tight">
             {language === 'ar' ? 'سجل الدول ذات السيادة' : 'Sovereign States of the Arab World'}
           </h2>
         </div>
@@ -59,7 +59,7 @@ export const CountryDiscoverySection: React.FC = () => {
           {/* Left Arrow Button */}
           <button
             onClick={prevSlide}
-            className="absolute -left-3 sm:-left-5 lg:-left-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 text-ink hover:bg-forest hover:text-white border border-[#D8D0C1] hover:border-forest shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer backdrop-blur-sm group"
+            className="absolute -left-3 sm:-left-5 lg:-left-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-forest text-white hover:bg-forest-dark border border-forest shadow-lg transition-all duration-200 cursor-pointer backdrop-blur-sm group"
             aria-label="Previous Countries"
           >
             <ChevronLeft className="w-5 h-5 rtl:rotate-180 transition-transform group-hover:-translate-x-0.5" />
@@ -68,7 +68,7 @@ export const CountryDiscoverySection: React.FC = () => {
           {/* Right Arrow Button */}
           <button
             onClick={nextSlide}
-            className="absolute -right-3 sm:-right-5 lg:-right-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 text-ink hover:bg-forest hover:text-white border border-[#D8D0C1] hover:border-forest shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer backdrop-blur-sm group"
+            className="absolute -right-3 sm:-right-5 lg:-right-6 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-forest text-white hover:bg-forest-dark border border-forest shadow-lg transition-all duration-200 cursor-pointer backdrop-blur-sm group"
             aria-label="Next Countries"
           >
             <ChevronRight className="w-5 h-5 rtl:rotate-180 transition-transform group-hover:translate-x-0.5" />
@@ -86,8 +86,6 @@ export const CountryDiscoverySection: React.FC = () => {
               }}
             >
             {countries.map((country) => {
-              const isHoveredCard = hoveredSlug === country.slug;
-
               return (
                 <div
                   key={country.id}
@@ -97,7 +95,7 @@ export const CountryDiscoverySection: React.FC = () => {
                     href={`/countries/${country.slug}`}
                     onMouseEnter={() => setHoveredSlug(country.slug)}
                     onMouseLeave={() => setHoveredSlug(null)}
-                    className="group relative flex flex-col justify-between aspect-[3/4.2] sm:aspect-[3/4.4] w-full bg-slate-950 border border-border hover:border-antiqueGold transition-all duration-300 overflow-hidden shadow-sm hover:shadow-2xl"
+                    className="group relative flex flex-col justify-between aspect-[3/4.2] sm:aspect-[3/4.4] w-full bg-slate-950 border border-forest/30 hover:border-forest transition-all duration-300 overflow-hidden shadow-md hover:shadow-2xl"
                   >
                     {/* Background Image with Hover Zoom */}
                     <div
@@ -110,7 +108,7 @@ export const CountryDiscoverySection: React.FC = () => {
 
                     {/* Top Badges (Region, GCC, ISO) */}
                     <div className="relative z-10 p-4 flex items-center justify-between">
-                      <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-forest text-[10px] font-mono font-bold uppercase tracking-wider border border-white/20 shadow-sm">
+                      <span className="px-3 py-1 bg-forest/90 backdrop-blur-md text-white text-[10px] font-mono font-bold uppercase tracking-wider border border-white/20 shadow-sm">
                         {country.region}
                       </span>
 
@@ -173,8 +171,8 @@ export const CountryDiscoverySection: React.FC = () => {
                 onClick={() => goToSlide(pageIdx * visibleCards)}
                 className={`transition-all duration-300 rounded-full cursor-pointer ${
                   isActive
-                    ? 'w-8 h-2.5 bg-antiqueGold shadow-sm'
-                    : 'w-2.5 h-2.5 bg-[#D8D0C1] hover:bg-antiqueGold/70'
+                    ? 'w-8 h-2.5 bg-forest shadow-sm'
+                    : 'w-2.5 h-2.5 bg-forest/30 hover:bg-forest'
                 }`}
                 aria-label={`Go to slide page ${pageIdx + 1}`}
                 aria-selected={isActive}

@@ -89,16 +89,16 @@ export const InsideTheArchiveSection: React.FC = () => {
   const [activeDoc, setActiveDoc] = useState<ArchiveDocument | null>(null);
 
   return (
-    <section className="bg-canvas-paper py-24 px-4 sm:px-6 lg:px-8 border-b border-border">
+    <section className="bg-antiqueGold py-24 px-4 sm:px-6 lg:px-8 border-b border-forest/20">
       <div className="mx-auto max-w-archival">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-border gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-forest/20 gap-4">
           <div>
-            <h2 className="font-serif text-3xl sm:text-5xl text-ink font-bold tracking-tight">
+            <h2 className="font-serif text-3xl sm:text-5xl text-forest font-bold tracking-tight">
               {language === 'ar' ? 'داخل الأرشيف والوثائق التاريخية' : 'Inside the Archive'}
             </h2>
           </div>
-          <p className="text-xs sm:text-sm text-ink-muted max-w-md">
+          <p className="text-xs sm:text-sm text-forest/80 font-medium max-w-md">
             {language === 'ar'
               ? 'مخطوطات، وخرائط أثرية، ومعاهدات تأسيسية، ومراسيم ملكية محفوظة ومفهرسة وفق أعلى معايير الحفظ الأرشيفي.'
               : 'Scholarly examination table displaying rare manuscripts, historical cartography, state treaties, and official gazettes.'}
@@ -111,7 +111,7 @@ export const InsideTheArchiveSection: React.FC = () => {
             <div
               key={item.id}
               onClick={() => setActiveDoc(item)}
-              className="group cursor-pointer bg-canvas-white border border-border hover:border-antiqueGold transition-all p-5 flex flex-col justify-between shadow-editorial rounded-2xl hover:shadow-lg"
+              className="group cursor-pointer bg-white border border-forest/20 hover:border-forest transition-all p-5 flex flex-col justify-between shadow-md rounded-2xl hover:shadow-xl"
             >
               <div>
                 {/* Visual Preview */}
@@ -121,30 +121,30 @@ export const InsideTheArchiveSection: React.FC = () => {
                     style={{ backgroundImage: `url('${item.imageUrl}')` }}
                   />
                   <div className="absolute top-2.5 left-2.5">
-                    <span className="px-2.5 py-0.5 bg-canvas-white/95 text-ink text-[10px] font-mono uppercase tracking-wider border border-border rounded-full shadow-sm">
+                    <span className="px-2.5 py-0.5 bg-forest text-white text-[10px] font-mono uppercase tracking-wider border border-forest/20 rounded-full shadow-sm">
                       {item.category}
                     </span>
                   </div>
                 </div>
 
-                <div className="text-[11px] font-mono text-antiqueGold uppercase tracking-wider mb-1 font-semibold">
+                <div className="text-[11px] font-mono text-forest uppercase tracking-wider mb-1 font-extrabold">
                   {item.date} · {item.origin}
                 </div>
 
-                <h3 className="font-serif font-bold text-lg text-ink group-hover:text-forest transition-colors mb-1 leading-snug">
+                <h3 className="font-serif font-bold text-lg text-forest group-hover:text-forest-light transition-colors mb-1 leading-snug">
                   {item.title}
                 </h3>
 
-                <div className="font-arabic text-xs text-ink-muted mb-3">
+                <div className="font-arabic text-xs text-forest/70 mb-3">
                   {item.arabicTitle}
                 </div>
 
-                <p className="text-xs text-ink-muted line-clamp-2 leading-relaxed font-sans">
+                <p className="text-xs text-forest/80 line-clamp-2 leading-relaxed font-sans">
                   {item.summary}
                 </p>
               </div>
 
-              <div className="pt-4 mt-4 border-t border-border/70 flex items-center justify-between text-xs font-mono text-antiqueGold group-hover:text-forest font-semibold">
+              <div className="pt-4 mt-4 border-t border-forest/15 flex items-center justify-between text-xs font-mono text-forest font-bold group-hover:text-forest-light">
                 <span>Inspect Document</span>
                 <span>↗</span>
               </div>

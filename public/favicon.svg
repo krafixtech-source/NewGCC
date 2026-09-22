@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5B4BF7" />
+      <stop offset="50%" stop-color="#4B6BF5" />
+      <stop offset="100%" stop-color="#00C8FF" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Rounded Four-Point Cross / Star Background -->
+  <g transform="translate(256, 256)">
+    <!-- Upper Chevron Pill -->
+    <path d="M -160 -40 Q -160 -180 0 -180 Q 160 -180 160 -40 C 160 30 110 80 0 100 C -110 80 -160 30 -160 -40 Z" fill="url(#starGrad)" />
+    
+    <!-- Lower Chevron Pill -->
+    <path d="M -160 40 Q -160 180 0 180 Q 160 180 160 40 C 160 -30 110 -80 0 -100 C -110 -80 -160 -30 -160 40 Z" fill="url(#starGrad)" />
+
+    <!-- Core Cross Connection -->
+    <path d="M -140 -20 Q 0 -190 140 -20 Q 190 0 140 20 Q 0 190 -140 20 Q -190 0 -140 -20 Z" fill="url(#starGrad)" />
+
+    <!-- Center Black Sparkle Cutout -->
+    <path d="M 0 -110 Q 0 0 110 0 Q 0 0 0 110 Q 0 0 -110 0 Q 0 0 0 -110 Z" fill="#050515" />
+
+    <!-- Center Purple Diamond Dot -->
+    <polygon points="0,-16 16,0 0,16 -16,0" fill="#7C3AED" />
+  </g>
+</svg>
