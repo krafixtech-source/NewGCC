@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Clock, Landmark, ArrowRight, Sparkles, BookOpen, Compass } from 'lucide-react';
 import { historicalErasData } from '@/lib/data/history';
 import { useLanguage } from '@/components/LanguageProvider';
+import { InsideTheArchiveSection } from '@/components/home/InsideTheArchiveSection';
+import { TodayInHistorySection } from '@/components/home/TodayInHistorySection';
 
 export default function HistoryPage() {
   const { language } = useLanguage();
@@ -109,6 +111,12 @@ export default function HistoryPage() {
           ))}
         </div>
       </div>
+
+      {/* Today in Arab History Section */}
+      <TodayInHistorySection />
+
+      {/* Inside the Archive Section */}
+      <InsideTheArchiveSection />
 
     </div>
   );

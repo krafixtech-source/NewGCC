@@ -21,7 +21,7 @@ export const HeroSection: React.FC = () => {
   );
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const DURATION = 2500; // 2.5 seconds per slide
+  const DURATION = 3500; // 3.5 seconds per slide (3-4 sec range)
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % kings.length);
@@ -35,7 +35,7 @@ export const HeroSection: React.FC = () => {
     setCurrentIndex(index);
   };
 
-  // Continuous auto slide effect every 2.5 seconds (never pauses on hover)
+  // Continuous auto slide effect every 3.5 seconds
   useEffect(() => {
     if (kings.length === 0) return;
 
@@ -120,7 +120,7 @@ export const HeroSection: React.FC = () => {
 
             {/* Monarch Full Name & Arabic Title */}
             <div className="space-y-2">
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-[#153B32] leading-tight tracking-tight">
+              <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl 2xl:text-5xl font-bold text-[#153B32] leading-tight tracking-tight">
                 {currentKing.name}
               </h2>
               
@@ -135,25 +135,12 @@ export const HeroSection: React.FC = () => {
               </p>
             </div>
 
-            {/* Biography Excerpt Card */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-[#FAF8F5] border border-[#E5E7EB] shadow-sm">
+            {/* Biography Excerpt */}
+            <div>
               <p className="text-xs sm:text-sm lg:text-base text-[#374151] leading-relaxed font-sans line-clamp-3 sm:line-clamp-4">
                 {currentKing.biography}
               </p>
             </div>
-
-            {/* Key Sovereign Achievements & Legacy */}
-            {currentKing.politicalLegacy && (
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-[#153B32] tracking-wide">
-                  <ShieldCheck className="w-4 h-4 text-[#B89A61]" />
-                  <span>{language === 'ar' ? 'المكتسبات والإنجازات السيادية' : 'Key Achievements & Legacy'}</span>
-                </div>
-                <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed font-sans line-clamp-2">
-                  {currentKing.politicalLegacy}
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Footer Action Links */}
@@ -166,15 +153,6 @@ export const HeroSection: React.FC = () => {
                 <span>{language === 'ar' ? 'السيرة التوثيقية الكاملة' : 'Full Biography'}</span>
                 <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
               </Link>
-
-              {currentKing.dynastySlug && (
-                <Link
-                  href={`/royalty/${currentKing.dynastySlug}`}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-white hover:bg-[#FAF8F5] text-[#153B32] border border-[#D1D5DB] hover:border-[#B89A61] text-xs font-mono uppercase tracking-wider font-semibold rounded-full transition-all shadow-sm"
-                >
-                  <span>{language === 'ar' ? 'سجل الأسرة الحاكمة' : 'Royal House Record'}</span>
-                </Link>
-              )}
             </div>
           </div>
         </div>

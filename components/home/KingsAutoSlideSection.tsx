@@ -18,7 +18,7 @@ export const KingsAutoSlideSection: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const DURATION = 5000; // 5 seconds per slide
+  const DURATION = 3500; // 3.5 seconds per slide (3-4 sec range)
   const TICK = 50;
 
   const nextSlide = () => {
@@ -132,7 +132,7 @@ export const KingsAutoSlideSection: React.FC = () => {
 
               {/* Monarch Full Name & Arabic Title */}
               <div className="space-y-1">
-                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#153B32] leading-tight">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#153B32] leading-tight">
                   {currentKing.name}
                 </h3>
                 
@@ -148,24 +148,11 @@ export const KingsAutoSlideSection: React.FC = () => {
               </div>
 
               {/* Biography Excerpt */}
-              <div className="p-4 rounded-xl bg-[#F9FAFB] border border-[#F3F4F6]">
+              <div>
                 <p className="text-xs sm:text-sm text-[#374151] leading-relaxed font-sans line-clamp-3">
                   {currentKing.biography}
                 </p>
               </div>
-
-              {/* Key Political Legacy / Highlights */}
-              {currentKing.politicalLegacy && (
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase text-[#153B32]">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#B89A61]" />
-                    <span>{language === 'ar' ? 'المكتسبات والإنجازات السيادية' : 'Key Achievements & Legacy'}</span>
-                  </div>
-                  <p className="text-xs text-[#4B5563] leading-relaxed font-sans line-clamp-2">
-                    {currentKing.politicalLegacy}
-                  </p>
-                </div>
-              )}
             </div>
 
             {/* Footer Action Links & Progress Line */}
@@ -178,15 +165,6 @@ export const KingsAutoSlideSection: React.FC = () => {
                   <span>{language === 'ar' ? 'السيرة التوثيقية الكاملة' : 'Full Biography'}</span>
                   <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
                 </Link>
-
-                {currentKing.dynastySlug && (
-                  <Link
-                    href={`/royalty/${currentKing.dynastySlug}`}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-[#F9FAFB] text-[#153B32] border border-[#D1D5DB] text-xs font-mono uppercase tracking-wider font-semibold rounded-full transition-all shadow-sm"
-                  >
-                    <span>{language === 'ar' ? 'سجل الأسرة الحاكمة' : 'Royal House Record'}</span>
-                  </Link>
-                )}
               </div>
 
               {/* Auto Slide Progress Line */}

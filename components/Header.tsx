@@ -128,10 +128,10 @@ export const Header: React.FC = () => {
               <div className="relative" ref={moreMenuRef}>
                 <button
                   onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-                  className={`flex items-center justify-center h-[34px] sm:h-[36px] w-[34px] sm:w-[36px] border-[1.5px] bg-white transition-all duration-200 cursor-pointer shrink-0 ${
+                  className={`flex items-center justify-center h-[36px] sm:h-[38px] w-[36px] sm:w-[38px] border-[1.5px] bg-white transition-all duration-200 cursor-pointer shrink-0 ${
                     isMoreMenuOpen
-                      ? 'border-[#253858] text-[#253858] shadow-sm'
-                      : 'border-[#D5CDBC] text-[#181816] hover:border-[#253858] hover:text-[#253858] hover:bg-[#FAF8F5] shadow-xs'
+                      ? 'border-[#123C33] text-[#123C33] shadow-sm'
+                      : 'border-[#D5CDBC] text-[#181816] hover:border-[#123C33] hover:text-[#123C33] hover:bg-[#FAF8F5] shadow-xs'
                   }`}
                   aria-label="More archival options"
                   aria-expanded={isMoreMenuOpen}

@@ -57,11 +57,11 @@ export const IntroStatementSection: React.FC = () => {
           {/* Hairline Divider */}
           <div className="w-16 h-[1px] bg-antiqueGold mx-auto" />
 
-          {/* Subtitle Statement */}
-          <p className="font-serif text-lg sm:text-2xl text-ink-muted italic leading-relaxed max-w-2xl mx-auto">
+          {/* Subtitle Statement (Guaranteed 1-line sentence) */}
+          <p className="font-serif text-sm sm:text-lg md:text-xl lg:text-[1.35rem] xl:text-2xl text-ink-muted italic max-w-none lg:whitespace-nowrap mx-auto tracking-tight">
             {language === 'ar'
-              ? 'توثق موسوعة GCC الشخصيات، والأماكن، والسلالات الحاكمة، والحضارات التي تواصل صياغة ملامح العالم العربي.'
-              : 'GCC documents the people, places, dynasties and civilizations that continue to shape the Arab world.'}
+              ? 'الأرشيف التوثيقي المعتمد للتاريخ العربي، والسلالات الحاكمة، والتراث الحضاري.'
+              : 'The authoritative living archive of Arab history, sovereign dynasties, and cultural heritage.'}
           </p>
         </div>
 

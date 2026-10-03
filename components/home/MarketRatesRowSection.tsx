@@ -178,10 +178,10 @@ export const MarketRatesRowSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
 
           {/* Part 1: Live Physical Gold Rates */}
-          <div className="bg-forest-surface/90 border border-white/15 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+          <div className="bg-forest-surface/90 border-2 border-[#B89A61]/40 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
             <div>
               {/* Gold Header */}
-              <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b border-white/15">
+              <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b border-[#B89A61]/30">
                 <div className="flex items-center gap-2">
                   <Coins className="w-4 h-4 text-antiqueGold" />
                   <h3 className="font-serif text-lg sm:text-xl font-bold text-white">
@@ -195,7 +195,7 @@ export const MarketRatesRowSection: React.FC = () => {
                     ${spotOunceUSD.toFixed(2)}/oz
                   </span>
                   <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 border ${
-                    change24hPct >= 0 ? 'bg-emerald-900/60 text-emerald-300 border-emerald-500/40' : 'bg-rose-900/60 text-rose-300 border-rose-500/40'
+                    change24hPct >= 0 ? 'bg-emerald-900/60 text-emerald-300 border-emerald-500/50' : 'bg-rose-900/60 text-rose-300 border-rose-500/50'
                   }`}>
                     {change24hPct >= 0 ? `+${change24hPct}%` : `${change24hPct}%`}
                   </span>
@@ -210,8 +210,8 @@ export const MarketRatesRowSection: React.FC = () => {
                     onClick={() => setSelectedGoldCurrency(code)}
                     className={`px-2.5 py-1 text-xs font-mono font-bold transition-all cursor-pointer border ${
                       selectedGoldCurrency === code
-                        ? 'bg-antiqueGold text-forest border-antiqueGold font-bold'
-                        : 'bg-forest-dark/70 text-white/80 hover:bg-forest-light border-white/15'
+                        ? 'bg-antiqueGold text-forest border-antiqueGold font-bold shadow-md'
+                        : 'bg-forest-dark/80 text-white/90 hover:bg-forest-light border-[#B89A61]/40 hover:border-[#B89A61]'
                     }`}
                   >
                     {code}
@@ -224,8 +224,8 @@ export const MarketRatesRowSection: React.FC = () => {
                 {keyGoldKarats.map((k, i) => {
                   const price = gram24kUSD * k.purity * goldFxMultiplier;
                   return (
-                    <div key={i} className="p-3 bg-forest-dark/80 border border-white/15 flex flex-col justify-between">
-                      <span className="text-[10px] font-mono uppercase text-white/60 block mb-1">
+                    <div key={i} className="p-3 bg-forest-dark/90 border border-[#B89A61]/50 hover:border-[#B89A61] transition-all flex flex-col justify-between shadow-sm">
+                      <span className="text-[10px] font-mono uppercase text-white/70 block mb-1 font-semibold">
                         {language === 'ar' ? k.labelAr : k.label}
                       </span>
                       <span className={`font-serif text-lg font-bold text-white transition-colors ${
@@ -243,8 +243,8 @@ export const MarketRatesRowSection: React.FC = () => {
             </div>
 
             {/* Gold Bottom CTA */}
-            <div className="pt-4 border-t border-white/15 flex items-center justify-between text-xs font-mono">
-              <span className="text-white/60">
+            <div className="pt-4 border-t border-[#B89A61]/30 flex items-center justify-between text-xs font-mono">
+              <span className="text-white/70">
                 {language === 'ar' ? 'شامل تسعيرة السبائك والأونصة' : 'Includes Bullion & Scrap Valuation'}
               </span>
               <Link
@@ -258,14 +258,14 @@ export const MarketRatesRowSection: React.FC = () => {
           </div>
 
           {/* Part 2: Live Arab & GCC Currency Converter */}
-          <div className="bg-forest-surface/90 border border-white/15 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
+          <div className="bg-forest-surface/90 border-2 border-[#B89A61]/40 p-6 sm:p-7 flex flex-col justify-between shadow-2xl">
             <div>
               {/* Converter Header */}
-              <div className="mb-4 pb-3 border-b border-white/15">
+              <div className="mb-4 pb-3 border-b border-[#B89A61]/30">
                 <div className="flex items-center justify-between gap-4 mb-2">
                   <div className="flex items-center gap-2">
                     <Globe2 className="w-4 h-4 text-antiqueGold" />
-                    <span className="text-[11px] font-sans text-white/70 font-medium">
+                    <span className="text-[11px] font-sans text-white/80 font-medium">
                       1 {language === 'ar' ? convFromObj.nameAr : convFromObj.name} =
                     </span>
                   </div>
@@ -285,7 +285,7 @@ export const MarketRatesRowSection: React.FC = () => {
                   <select
                     value={convFromCode}
                     onChange={(e) => setConvFromCode(e.target.value)}
-                    className="w-full px-3 py-2 border border-white/20 bg-forest-dark text-white text-xs font-sans font-semibold focus:outline-none focus:ring-2 focus:ring-antiqueGold/40 cursor-pointer"
+                    className="w-full px-3 py-2 border border-[#B89A61]/50 bg-forest-dark text-white text-xs font-sans font-semibold focus:outline-none focus:ring-2 focus:ring-antiqueGold/60 cursor-pointer"
                   >
                     {ARAB_CURRENCIES.map(c => (
                       <option key={c.code} value={c.code} className="bg-forest-dark text-white">
@@ -299,7 +299,7 @@ export const MarketRatesRowSection: React.FC = () => {
                     min="1"
                     value={convAmount}
                     onChange={(e) => setConvAmount(Math.max(0, parseFloat(e.target.value) || 0))}
-                    className="w-full px-3 py-2.5 border border-white/20 bg-forest-dark text-white font-sans font-bold text-base focus:outline-none focus:ring-2 focus:ring-antiqueGold/40"
+                    className="w-full px-3 py-2.5 border border-[#B89A61]/50 bg-forest-dark text-white font-sans font-bold text-base focus:outline-none focus:ring-2 focus:ring-antiqueGold/60"
                   />
                 </div>
 
@@ -307,7 +307,7 @@ export const MarketRatesRowSection: React.FC = () => {
                 <div className="sm:col-span-1 flex justify-center py-1 sm:py-0">
                   <button
                     onClick={handleSwap}
-                    className="flex items-center justify-center w-8 h-8 rounded-full bg-antiqueGold hover:bg-white text-forest border border-antiqueGold transition-all cursor-pointer transform active:scale-95"
+                    className="flex items-center justify-center w-8 h-8 rounded-full bg-antiqueGold hover:bg-white text-forest border border-antiqueGold transition-all cursor-pointer transform active:scale-95 shadow-md"
                     title="Swap Currencies"
                     aria-label="Swap"
                   >
@@ -320,7 +320,7 @@ export const MarketRatesRowSection: React.FC = () => {
                   <select
                     value={convToCode}
                     onChange={(e) => setConvToCode(e.target.value)}
-                    className="w-full px-3 py-2 border border-white/20 bg-forest-dark text-white text-xs font-sans font-semibold focus:outline-none focus:ring-2 focus:ring-antiqueGold/40 cursor-pointer"
+                    className="w-full px-3 py-2 border border-[#B89A61]/50 bg-forest-dark text-white text-xs font-sans font-semibold focus:outline-none focus:ring-2 focus:ring-antiqueGold/60 cursor-pointer"
                   >
                     {ARAB_CURRENCIES.map(c => (
                       <option key={c.code} value={c.code} className="bg-forest-dark text-white">
@@ -328,7 +328,7 @@ export const MarketRatesRowSection: React.FC = () => {
                       </option>
                     ))}
                   </select>
-                  <div className="flex items-center justify-between px-3 py-2.5 border border-white/20 bg-forest-dark text-white">
+                  <div className="flex items-center justify-between px-3 py-2.5 border border-[#B89A61]/50 bg-forest-dark text-white">
                     <span className="font-sans font-bold text-base text-antiqueGold truncate">
                       {convertedTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
@@ -344,15 +344,15 @@ export const MarketRatesRowSection: React.FC = () => {
               </div>
 
               {/* Single Exchange Rate Indicator */}
-              <div className="text-[11px] font-mono text-white/70 py-1.5 px-3 bg-forest-dark/80 border border-white/15 flex items-center justify-between mb-4">
+              <div className="text-[11px] font-mono text-white/80 py-1.5 px-3 bg-forest-dark/90 border border-[#B89A61]/40 flex items-center justify-between mb-4">
                 <span>1 {convFromCode} = {singleRate.toFixed(4)} {convToCode}</span>
                 <span>1 {convToCode} = {(1 / singleRate).toFixed(4)} {convFromCode}</span>
               </div>
             </div>
 
             {/* Currency Bottom CTA */}
-            <div className="pt-4 border-t border-white/15 flex items-center justify-between text-xs font-mono">
-              <span className="text-white/60">
+            <div className="pt-4 border-t border-[#B89A61]/30 flex items-center justify-between text-xs font-mono">
+              <span className="text-white/70">
                 {language === 'ar' ? 'أسعار تثبيت البنوك المركزية' : 'Central Bank Peg Rates'}
               </span>
               <Link

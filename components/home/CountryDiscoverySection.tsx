@@ -33,6 +33,15 @@ export const CountryDiscoverySection: React.FC = () => {
   const totalPages = Math.ceil(countries.length / visibleCards);
   const currentPage = Math.floor(currentIndex / visibleCards);
 
+  // Auto slide effect every 3.5 seconds (3-4 sec range)
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    }, 3500);
+
+    return () => clearInterval(timer);
+  }, [maxIndex, currentIndex]);
+
   return (
     <section 
       className="bg-antiqueGold py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-b border-forest/20 overflow-hidden relative"

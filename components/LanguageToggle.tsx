@@ -25,23 +25,25 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
       aria-label={isEn ? 'Switch to Arabic language' : 'Switch to English language'}
       title={isEn ? 'Switch to Arabic (AR)' : 'Switch to English (EN)'}
       dir="ltr"
-      className={`relative inline-flex items-center h-[34px] sm:h-[36px] w-[96px] sm:w-[104px] bg-white border-[1.5px] border-[#253858] overflow-hidden cursor-pointer select-none shrink-0 shadow-xs transition-opacity hover:opacity-95 ${className}`}
+      className={`relative inline-flex items-center h-[36px] sm:h-[38px] w-[100px] sm:w-[108px] bg-[#F7F5F0] border-[1.5px] border-[#123C33] overflow-hidden cursor-pointer select-none shrink-0 shadow-xs transition-all hover:shadow-md hover:border-[#1a4a3e] p-[2px] ${className}`}
+      style={{ borderRadius: '9999px' }}
     >
       {/* Sliding Active Pill Background */}
       <motion.div
         layout
         initial={false}
         animate={{
-          left: isEn ? '0%' : '50%',
+          left: isEn ? '2px' : 'calc(50% + 1px)',
         }}
         transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-        className="absolute top-0 bottom-0 w-1/2 bg-[#253858]"
+        className="absolute top-[2px] bottom-[2px] w-[calc(50%-3px)] bg-[#123C33] shadow-sm"
+        style={{ borderRadius: '9999px' }}
       />
 
       {/* English Label (Left Half) */}
       <div 
-        className={`relative z-10 w-1/2 h-full flex items-center justify-center text-[12px] sm:text-[13px] font-sans font-bold tracking-wide transition-colors duration-200 select-none ${
-          isEn ? 'text-white' : 'text-[#253858]'
+        className={`relative z-10 w-1/2 h-full flex items-center justify-center text-[12px] sm:text-[13px] font-sans font-bold tracking-wider transition-colors duration-200 select-none ${
+          isEn ? 'text-white font-extrabold' : 'text-[#123C33] hover:text-[#1a4a3e]'
         }`}
       >
         EN
@@ -49,8 +51,8 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
 
       {/* Arabic / Secondary Label (Right Half) */}
       <div 
-        className={`relative z-10 w-1/2 h-full flex items-center justify-center text-[12px] sm:text-[13px] font-sans font-bold tracking-wide transition-colors duration-200 select-none ${
-          !isEn ? 'text-white' : 'text-[#253858]'
+        className={`relative z-10 w-1/2 h-full flex items-center justify-center text-[12px] sm:text-[13px] font-sans font-bold tracking-wider transition-colors duration-200 select-none ${
+          !isEn ? 'text-white font-extrabold' : 'text-[#123C33] hover:text-[#1a4a3e]'
         }`}
       >
         AR
